@@ -1,0 +1,1 @@
+<view class="status_container"><view class="img_fin"><image src="../../static/orderfinish.png" mode></image></view><view class="fin_content"><view data-event-opts="{{[['tap',[['goIngre']]]]}}" class="return_ingre" bindtap="__e">继续逛逛</view><view data-event-opts="{{[['tap',[['goOrder']]]]}}" class="return_order" bindtap="__e">查看订单</view></view></view>

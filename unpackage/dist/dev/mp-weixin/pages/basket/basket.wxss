@@ -1,0 +1,100 @@
+
+page{
+    background-color: #f5f5f5;
+    width: 100%;
+    height: 100vh;
+}
+.basket_item{
+    background-color: #fff;
+    margin-bottom: 15px;
+    color: black;
+    padding: 10px 20px;
+}
+.item_fin{
+    text-decoration:line-through;
+    color: #666;
+}
+.item_main{
+    margin-top: 10px;
+}
+.item_header{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+            align-items: center;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+            justify-content: space-between;
+}
+.main_content{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+            align-items: center;
+    font-size: 15px;
+    color: black;
+    font-weight: 300;
+/*    margin: 5px 10px; */
+    background-color: #f5f5f5;
+    padding: 12px 10px;
+    margin-bottom: 10px;
+    -webkit-border-radius: 5px;
+            border-radius: 5px;
+}
+.item_checkbox{
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+            flex: 1;
+    text-align: center;
+}
+.item_name{
+    -webkit-box-flex: 2;
+    -webkit-flex: 2;
+            flex: 2;
+}
+.item_foodnum{
+    -webkit-box-flex: 2;
+    -webkit-flex: 2;
+            flex: 2;
+}
+.item_del{
+    margin-top: 10px;
+    display: inline-block;
+    border: 1px solid #FDAB61;
+    color: #FDAB61;
+    font-size: 13px;
+    -webkit-border-radius: 5px;
+            border-radius: 5px;
+    padding: 5px 5px;
+}
+checkbox .wx-checkbox-input{
+    -webkit-border-radius: 50%;
+            border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #666;
+}
+checkbox .wx-checkbox-input.wx-checkbox-input-checked{
+    background-color: #FDAB61;
+    -webkit-border-radius: 50%;
+            border-radius: 50%;
+    border: 1px solid #FDAB61;
+}
+.item_checkfin{
+    margin-bottom: 10px;
+}
+.item_buy{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+            align-items: center;
+}
+  
+
+

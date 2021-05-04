@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "食材集市",
+  "disableScroll": true,
+  "usingComponents": {
+    "buy-cart": "/components/buyCart"
+  }
+}

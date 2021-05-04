@@ -1,0 +1,57 @@
+
+.nodeDetail_container .nodeDetailItem .node_img{
+  width: 100%;
+  height: 270px;
+}
+.nodeDetail_container .nodeDetailItem .node_img image{
+  width: 100%;
+  /* 
+  img 360 240
+  swiper width / swiper height = img width / img height
+  swiper height = swiper width * img height /img width
+  height:100vw*240 /360
+    */
+}
+.note_user{
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding: 15px 20px 10px 20px;
+}
+.note_user .user_img{
+  width: 50px;
+  height: 50px;
+}
+.user_img image{
+  width: 100%;
+  height: 100%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
+}
+.user_name{
+  margin-left: 10px;
+  font-weight: 17px;
+  font-weight: bold;
+}
+.note_content{
+  padding:10px 20px 0px 20px;
+}
+.note_content .note_title{
+  font-size: 15px;
+  font-weight: 600;
+}
+.note_content .note_main{
+  padding-top: 15px;
+}
+.note_date{
+  padding:5px 20px;
+  color: #666666;
+  font-size: 12px;
+}
+
+
+
+

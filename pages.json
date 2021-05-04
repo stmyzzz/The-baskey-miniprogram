@@ -1,0 +1,202 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "THE BAKERY",
+        "navigationStyle":"custom"
+			}
+		},
+		{
+		"path": "pages/source/source",
+		"style": {
+			"navigationBarTitleText": "烘培种类"
+		}
+		},
+		{
+		"path": "pages/ingre/ingre",
+		"style": {
+			"navigationBarTitleText": "食材集市",
+      "disableScroll":true
+		}
+		},
+		{
+		"path": "pages/me/me",
+		"style": {
+			"navigationBarTitleText": "我的",
+      "navigationStyle":"custom",
+            "disableScroll":true
+		}
+		}
+    ,{
+				"path" : "pages/sourceDetail/sourceDetail",
+				"style" :                                                                                    
+				{
+						"navigationBarTitleText": "detail",
+						"enablePullDownRefresh": false
+				}
+				
+		}
+        ,{
+            "path" : "pages/ingreDetail/ingreDetail",
+            "style" :                                                                                    
+            {
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/basket/basket",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的菜篮子",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/note/note",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "笔记心得",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/nodeDetail/nodeDetail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/writeNote/writeNote",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "写笔记",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/buylist/buylist",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "确认订单",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/orderstatus/orderstatus",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "订单状态",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/orderDetail/orderDetail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "订单详情",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/order/order",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的订单",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        
+        ,{
+            "path" : "pages/setting/setting",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "设置",
+                "enablePullDownRefresh": false,
+                "disableScroll":true
+            }
+            
+        }
+        ,{
+            "path" : "pages/about/about",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/wxlogin/wxlogin",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "授权登录",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
+	"tabBar": {
+	    "color": "#7A7E83",
+	    "selectedColor": "#FDAB61",
+	    "borderStyle": "white",
+	    "backgroundColor": "#ffffff",
+	    "list": [{
+	        "pagePath": "pages/index/index",
+	        "iconPath": "static/index_bar.png",
+	        "selectedIconPath": "static/index_bar_active.png",
+	        "text": "首页"
+	    }, {
+	        "pagePath": "pages/source/source",
+	        "iconPath": "static/source_bar.png",
+	        "selectedIconPath": "static/source_bar_active.png",
+	        "text": "课程"
+	    },
+			{
+			    "pagePath": "pages/ingre/ingre",
+			    "iconPath": "static/ingre_bar.png",
+			    "selectedIconPath": "static/ingre_bar_active.png",
+			    "text": "食材"
+			},
+			{
+			    "pagePath": "pages/me/me",
+			    "iconPath": "static/me_bar.png",
+			    "selectedIconPath": "static/me_bar_active.png",
+			    "text": "我的"
+			}
+			]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8",
+		"usingComponents":{
+      "van-uploader":"./wxcomponents/vant/uploader/index",
+      "van-transition":"./wxcomponents/vant/transition/index",
+      "van-tab": "./wxcomponents/vant/tab/index",
+      "van-tabs": "./wxcomponents/vant/tabs/index"
+		}
+	},
+	"condition" : { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [
+			{
+				"name": "", //模式名称
+				"path": "", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			}
+		]
+	}
+}

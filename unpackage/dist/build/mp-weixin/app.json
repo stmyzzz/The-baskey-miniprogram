@@ -1,0 +1,72 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/source/source",
+    "pages/ingre/ingre",
+    "pages/me/me",
+    "pages/sourceDetail/sourceDetail",
+    "pages/ingreDetail/ingreDetail",
+    "pages/basket/basket",
+    "pages/note/note",
+    "pages/nodeDetail/nodeDetail",
+    "pages/writeNote/writeNote",
+    "pages/buylist/buylist",
+    "pages/orderstatus/orderstatus",
+    "pages/orderDetail/orderDetail",
+    "pages/order/order",
+    "pages/setting/setting",
+    "pages/about/about",
+    "pages/wxlogin/wxlogin"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#FDAB61",
+    "borderStyle": "white",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/index_bar.png",
+        "selectedIconPath": "static/index_bar_active.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/source/source",
+        "iconPath": "static/source_bar.png",
+        "selectedIconPath": "static/source_bar_active.png",
+        "text": "课程"
+      },
+      {
+        "pagePath": "pages/ingre/ingre",
+        "iconPath": "static/ingre_bar.png",
+        "selectedIconPath": "static/ingre_bar_active.png",
+        "text": "食材"
+      },
+      {
+        "pagePath": "pages/me/me",
+        "iconPath": "static/me_bar.png",
+        "selectedIconPath": "static/me_bar_active.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "需要位置"
+    }
+  },
+  "usingComponents": {
+    "van-uploader": "./wxcomponents/vant/uploader/index",
+    "van-transition": "./wxcomponents/vant/transition/index",
+    "van-tab": "./wxcomponents/vant/tab/index",
+    "van-tabs": "./wxcomponents/vant/tabs/index"
+  },
+  "sitemapLocation": "sitemap.json"
+}
