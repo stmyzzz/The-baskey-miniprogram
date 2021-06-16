@@ -1,6 +1,7 @@
 {
   "enablePullDownRefresh": false,
   "usingComponents": {
-    "buy-cart": "/components/buyCart"
+    "buy-cart": "/components/buyCart",
+    "title": "/components/Title"
   }
 }

@@ -7,21 +7,17 @@
         <image  :src="item.imgUrl" mode=""></image>
 			</swiper-item>
 		</swiper>
-		
 		<!-- 食谱信息 -->
-     <view class="index_detail">
-             <view class="source_container">
+    <view class="index_detail">
+        <view class="source_container">
 				<view class="source_title">食谱
         </view>
         <view class="source_content">
 				<view class="source_item" v-for="(item,index) in Sources" :key="index" @click="navToDetailSource(item._id,item.source_name)">
 					<image :src="item.imgUrl" mode="scaleToFill"></image>
 				</view>          
-   
 		</view>
     </view>
-
-		
 		<!-- 食材信息 -->
 		<view class="ingre_container">
         <view class="ingre_title">精选食材</view>
@@ -54,13 +50,12 @@
         </view>  
       </view>
 		</view>
-     </view>
+    </view>
 
 	</view>
 </template>
 
 <script>
-  import showLoading from '../../components/showLoading'
 	export default {
 		data() {
 			return {
@@ -72,9 +67,6 @@
         isShow:true
 			}
 		},
-    components:{
-      showLoading
-    },
 		onLoad() {
 			this.initData();
 		},

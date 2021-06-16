@@ -4,7 +4,8 @@ const commonCloud = (cloudName, mydata) => {
 			name: cloudName,
 			data: mydata
 		})
-		.then((res)=>{
+		.then(
+      (res)=>{
 			reslove(res.result)
 			},(err)=>{
 			reject(err)

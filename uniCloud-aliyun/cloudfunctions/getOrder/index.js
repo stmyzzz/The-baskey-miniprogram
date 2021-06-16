@@ -6,7 +6,7 @@ exports.main = async (event, context) => {
   if(event.order_phone){
   let date = new Date()
 	let res = await collection.add({
-		user_id:event.user_id
+		user_id:event.user_id,
     order_phone:event.order_phone,
     order_username:event.order_username,
     order_address:event.order_address,
@@ -14,7 +14,7 @@ exports.main = async (event, context) => {
     order_num:event.order_num,
     order_total:event.order_total,
     order_date:date,
-    order_status:"待发货"
+    order_status:0
 	})
 	console.log('event : ', event)
 	return res    

@@ -35,7 +35,7 @@
       </view>
       <view class="need_right">
       <view @click="gowritenote()" class="writeNote">
-         <image style="width: 30px;height: 30px;display: block;" src="../../static/writenote.png" mode=""></image>
+        <image style="width: 30px;height: 30px;display: block;" src="../../static/writenote.png" mode=""></image>
       </view>
       <view @click="goSetting()" class="setting">
          <image style="width: 30px;height: 30px;display: block;" src="../../static/setting.png" mode=""></image>

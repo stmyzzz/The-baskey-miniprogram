@@ -1,0 +1,30 @@
+
+.basket-icon{
+  position: fixed;
+  bottom: 140px;
+  left: -55px;
+  background: #FF4136;
+  width: 45px;
+  height: 45px;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-transition: all .5s;
+  transition: all .5s;
+}
+._img{
+  width: 22px;
+  height: 22px;
+}
+.basket-icon-active{
+  left: 10px;
+}
+

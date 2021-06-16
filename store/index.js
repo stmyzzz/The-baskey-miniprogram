@@ -5,20 +5,21 @@ Vue.use(vuex)
 
 const store = new vuex.Store({
 	state:{
-		haslogin:false,
-		userInfo:{},
-		user_id:null, 
-		cartList:{}
+		userInfo:uni.getStorageSync('userInfo') ||  {},  /* 用户信息 */
+		user_id:uni.getStorageSync('user_id') ||  '', /* 用户id*/
+		cartList:{}, /* 购物车列表*/
+		isBasket:uni.getStorageSync('isBasket') || false
 	},
 	mutations:{
+    /* 微信授权登录*/
 		login(state,infor){
-			state.haslogin = true;
 			state.userInfo = infor;
 			uni.setStorage({
 				key:'userInfo',
 				data:infor
 			})
 		},
+    /* 得到用户open_id*/
 		get_userId(state,openid){
 			state.user_id = openid;
 			uni.setStorage({
@@ -27,17 +28,18 @@ const store = new vuex.Store({
 			})
 		},
 		logout(state){
-			state.haslogin = false;
+      /* 用户退出登录*/
 			state.userInfo = {};
 			state.user_id = null;
 			uni.removeStorage({
         key:'user_id'
 			})
       uni.removeStorage({
-      	key:'userInfo'
+				key:'userInfo'
       })
 		},
 		addCart(state,{
+      /* 添加到购物车*/
 			user_id,
 			food_id,
 			food_name,
@@ -59,7 +61,6 @@ const store = new vuex.Store({
 				key:"buyCart",
 				data:state.cartList
 			})
-			console.log(user_id)
 		},
 		reduceCart(state,{
 			user_id,
@@ -72,8 +73,8 @@ const store = new vuex.Store({
 					item[food_id]['food_num']--
 					state.cartList = {...cart}
 					uni.setStorage({
-				   key:"buyCart",
-				   data:state.cartList
+						key:"buyCart",
+						data:state.cartList
 					})
 				}else{
 					item[food_id] = null
@@ -107,10 +108,10 @@ const store = new vuex.Store({
 		},
     clearCart(state){
       uni.removeStorageSync('buyCart')
-    }
-	},
-	actions:{
-		
+    },
+		setBasket(state,status){
+			uni.setStorageSync('isBasket',status)
+		}
 	}
 })
 

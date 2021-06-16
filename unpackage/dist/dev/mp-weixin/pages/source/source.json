@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "烘培种类",
-  "usingComponents": {}
+  "usingComponents": {
+    "basket-icon": "/components/basket-icon"
+  }
 }

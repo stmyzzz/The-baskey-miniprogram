@@ -1,11 +1,11 @@
 <template>
 	<view class="buyCart_container">
     <block>
-	  	<view if class="cart_icon" @click.stop="onreduceCart(food._id)" v-if="foodNum">
+			<view if class="cart_icon" @click.stop="onreduceCart(food._id)" v-if="foodNum">
         <image style="width: 26px;height: 26px;" src="../static/reduce.png" mode=""></image>
       </view>
-	  	<view class="food_num" v-if="foodNum>0">{{foodNum}}</view>
-		  <view class="cart_icon" @click.stop="onaddCart(food._id,food.food_name,food.food_price)">        <image  style="width: 24px;height:24px;" src="../static/add.png" mode=""></image></view>
+			<view class="food_num" v-if="foodNum>0">{{foodNum}}</view>
+			<view class="cart_icon" @click.stop="onaddCart(food._id,food.food_name,food.food_price)">        <image  style="width: 24px;height:24px;" src="../static/add.png" mode=""></image></view>
     </block>
 	</view>
 </template>
@@ -18,14 +18,13 @@
 			return {
 				totalPrice:null,
 				cartFoodList:[]
-				
 			};
 		},
 		onLoad(){
 		},
-		props:['food','user_id'],
+		props:['food'],
 		computed:{
-			...mapState(['cartList','haslogin']),
+			...mapState(['cartList','user_id']),
 			shopCart: function (){
 				return Object.assign({},this.cartList);
 			},
@@ -48,8 +47,8 @@
         uni.showLoading({
             title: "加载中..."
           })
-        let haslogin = this.haslogin
-        if(!haslogin){
+        let user_id = this.user_id
+        if(!user_id){
           console.log('nologin')
           uni.navigateTo({
             url:`/pages/wxlogin/wxlogin`

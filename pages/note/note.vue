@@ -1,30 +1,30 @@
 <template>
 	<view class="note_container">
     <view class="note_ul">
-    <view class="note_item" v-for="(item,index) in noteList" :key="index" v-if="index%2 == 1" @click="goNoteDetail(item._id)">
+    <view class="note_item" v-for="(item,index) in noteList" :key="index" v-show="index%2 == 1" @click="goNoteDetail(item._id)">
       <view class="item_img">
       <image :src="item.note_imgUrl[0]" mode="widthFix"></image>            
       </view>
       <view class="item_content"> 
-        {{item.note_name}}
+        {{item.note_title}}
       </view>
       <view class="item_profile">
       <image class="note_user_img" :src="item.user_imgUrl" mode=""></image>              
-      <text class="note_user_name" >{{item.user_name}}</text>
+      <text class="note_user_name" >{{item.note_name}}</text>
       </view>   
     </view>       
     </view>
     <view class="note_ul">
-    <view class="note_item" v-if="index%2 == 0" v-for="(item,index) in noteList" :key="index" @click="goNoteDetail(item._id)">
+    <view class="note_item" v-show="index%2 == 0" v-for="(item,index) in noteList" :key="index" @click="goNoteDetail(item._id)">
       <view class="item_img">
       <image :src="item.note_imgUrl[0]" mode="widthFix"></image>            
       </view>
       <view class="item_content"> 
-        {{item.note_name}}
+        {{item.note_title}}
       </view>
       <view class="item_profile">
       <image class="note_user_img" :src="item.user_imgUrl" mode=""></image>              
-      <text class="note_user_name" >{{item.user_name}}</text>
+      <text class="note_user_name" >{{item.note_name}}</text>
       </view>   
     </view>       
     </view>

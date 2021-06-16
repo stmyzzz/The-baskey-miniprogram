@@ -146,6 +146,24 @@
             }
             
         }
+        ,{
+            "path" : "pages/assess/assess",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "评价订单",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/setOrder/setOrder",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "下订单",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"tabBar": {
 	    "color": "#7A7E83",
@@ -186,7 +204,9 @@
       "van-uploader":"./wxcomponents/vant/uploader/index",
       "van-transition":"./wxcomponents/vant/transition/index",
       "van-tab": "./wxcomponents/vant/tab/index",
-      "van-tabs": "./wxcomponents/vant/tabs/index"
+      "van-tabs": "./wxcomponents/vant/tabs/index",
+      "van-steps":"./wxcomponents/vant/steps/index",
+      "van-rate": "./wxcomponents/vant/rate/index"
 		}
 	},
 	"condition" : { //模式配置，仅开发期间生效

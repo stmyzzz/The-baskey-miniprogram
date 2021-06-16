@@ -1,26 +1,24 @@
 <template>
 	<view class="sourceDetail_container">
 		<view class="sourceDetail_content" v-for="(item,index) in source" :key="index">
-			<video class="source_video" :src="item.videoUrl[0]" controls>
-      </video>
+			<img class="source-img" :src="item.imgUrl" alt="">
 			<view class="source_name">
 				{{item.source_name}}
 			</view>
 			<view class="source_descrption">
 				{{item.descrptions}}
 			</view>
-			<!-- <view type="default" :class="isStar ? 'Star' : 'noStar'" @click="onStar(item._id,item.source_name,item.imgUrl)">收藏</view> -->
       <view class="ingre_container">
         <view class="ingre_header">
           <view class="header_left">
             用料
           </view>
-          <view :class="onBasket ? 'onBasket1' : 'offBasket1'" class="basket" @click="addBasket(source[0]._id,source[0].source_name,source[0].ingredients)">菜篮子</view>
+          <view :class="onBasket ? 'onBasket' : 'offBasket'" class="basket" @click="addBasket(source[0]._id,source[0].source_name,source[0].ingredients)"></view>
         </view>
         <view class="ingre_content" v-for="(ingreitem,ingreindex) in item.ingredients" :key="ingreindex" >
           <view class="ingre_item">
             <text class="item_name">{{ingreitem.name}}</text>
-            <text class="item_foodNum">{{ingreitem.food_num}}</text>
+            <text class="item_foodNum">{{ingreitem.num}}</text>
           </view>	
         </view>        
       </view>
@@ -43,52 +41,50 @@
       </view>
       
 		</view>
+    <basket-icon :isBasket="isBasket">
+    </basket-icon>
 	</view>
 </template>
 
 <script>
-	import {mapState} from 'vuex'
+	import {mapState,mapMutations} from 'vuex'
+  import BasketIcon from '../../components/basket-icon.vue'
 	export default {
 		data() {
 			return {
 				source:{},
-				user_id:null,
 				isStar:false,
-        isBasket:"放进菜篮子",
-        onBasket:false  
+        onBasket:false,
+        isBasket:uni.getStorageSync('isBasket') || false
 			}				
 		},
     computed:{
-      ...mapState(['haslogin'])
+      ...mapState(['user_id'])
     },
-		methods: {
-			onLoad(options){
+    components:{
+      BasketIcon
+    },
+    onLoad(options){
         wx.setNavigationBarTitle({ title:options.name})
         uni.showLoading({
             title: "加载中..."
           })
+        
 				let sourceId = options.id
 				console.log(sourceId)
 				var that = this
-				this.user_id = uni.getStorageSync('user_id')
 				console.log(this.user_id)
 				let user_id = this.user_id
-				uniCloud.callFunction({
-					name: 'getSourceDetail',
-					data:{
-						id:sourceId
-					}
-				}).then(res => {
-					console.log(res.result.data)
-					this.source = res.result.data
+        this.$api.commonCloud('getSourceDetail',{
+          id:sourceId
+        }).then(res => {
+					console.log(res.data)
+					this.source = res.data
 				})
-				uniCloud.callFunction({
-					name: 'getStar',
-					data:{
+				this.$api.commonCloud('getStar',{
 						user_id:user_id,
 						source_id:sourceId
-					}
-				}).then(res => {
+					}).then(res => {
 					console.log(res.result.data)
 					if(res.result.data.length){
 						that.isStar = true
@@ -96,50 +92,53 @@
 						that.isStar =false
 					}
 				})
-        uniCloud.callFunction({
-        	name: 'searchBasket',
-        	data:{
-        		user_id:user_id,
-        		source_id:sourceId,
-            }
-        	}).then(res =>{
+        this.$api.commonCloud('searchBasket',{
+          user_id:user_id,
+          source_id:sourceId,
+        }).then(res =>{
             console.log('resbasket',res)
             if(res.result.data.length){
-            	this.isBasket = "移出菜篮子"
               this.onBasket = true
             }else{
-              this.isBasket = "移入菜篮子"
               this.onBasket = false
           }
           uni.hideLoading()
           })
 			},
+		methods: {
+      ...mapMutations(['setBasket']),
 			addBasket(_id,source_name,cook_step){
-        let haslogin = this.haslogin
-        if(!haslogin){
-          console.log('nologin')
+        let user_id = this.user_id
+        if(!user_id){
           uni.navigateTo({
             url:`/pages/wxlogin/wxlogin`
           })
-          return
-        }
-        var that = this
-				let user_id = this.user_id
+        }else{
         let sourceId = _id
         cook_step.forEach(item=>{
           item['isChecked'] = false
         })
         if(this.onBasket){
+          /* 删除菜篮子 */
           uni.showLoading({
               title: "加载中..."
             })
           this.$api.commonCloud('addBasket',
-          	{
-          		user_id:user_id,
-          		source_id:sourceId
-          	}).then(res=>{  
-          	console.log(res)
-          	that.onBasket = false
+            {
+              user_id:user_id,
+              source_id:sourceId
+            }).then(res=>{  
+            console.log(res)
+            this.onBasket = false
+            this.$api.commonCloud('getBasket',{
+          user_id:user_id
+        }).then(res=>{
+          if(!res.data.length){
+            this.isBasket = false
+            this.setBasket(false)
+          }
+          
+        })
             uni.showToast({
               title:'操作成功'
             })
@@ -149,23 +148,26 @@
               title: "加载中..."
             })
           this.$api.commonCloud('addBasket',
-          	{
-          		user_id:user_id,
-          		source_id:sourceId,
-          		source_name:source_name,
-          		ingredients:cook_step
-          	}).then(res=>{
-          	console.log(res)
-          	that.onBasket = true
+            {
+              user_id:user_id,
+              source_id:sourceId,
+              source_name:source_name,
+              ingredients:cook_step
+            }).then(res=>{
+            console.log(res)
+            this.onBasket = true
+            this.setBasket(true)
+            this.isBasket = true
             uni.showToast({
               title:'操作成功'
             })
           })
         }
-			},
-			onStar(itemId,itemName,imgUrl){
-        let haslogin = this.haslogin
-        if(!haslogin){
+		}
+		},
+		onStar(itemId,itemName,imgUrl){
+			console.log(this.user_id)
+        if(!this.user_id){
           console.log('nologin')
           uni.navigateTo({
             url:`/pages/wxlogin/wxlogin`
@@ -181,13 +183,10 @@
             uni.showLoading({
                 title: "加载中..."
               })
-						uniCloud.callFunction({
-							name:'removeStar',
-							data:{
-								user_id:user_id,
-								source_id:source_id
-							}
-						}).then(res=>{
+						this.$api.commonCloud('removeStar',{
+              user_id:user_id,
+              source_id:source_id
+            }).then(res=>{
 							console.log(res)
 							that.isStar = false
               uni.showToast({
@@ -198,15 +197,12 @@
             uni.showLoading({
                 title: "加载中..."
               })
-						uniCloud.callFunction({
-							name:'addStar',
-							data:{
-								user_id:user_id,
-								source_id:source_id,
-								source_name:source_name,
-								source_imgUrl:source_imgUrl
-							}
-						}).then(res=>{
+						this.$api.commonCloud('addStar',{
+              user_id:user_id,
+              source_id:source_id,
+              source_name:source_name,
+              source_imgUrl:source_imgUrl
+            }).then(res=>{
 							console.log(res)
 							that.isStar = true
               uni.showToast({
@@ -228,13 +224,16 @@
 	.noStar{
 		background-color: #FF0000;
 	}
-  .onBasket1{
-    background-color: #007AFF;
+/*   .onBasket1,.offBasket1{
+    background-color: #d8d8d8;
+  } */
+  .onBasket::before{
+    content:'从菜篮子中移除'
   }
-  .offBasket1{
-    background-color: #FF0000;
+  .offBasket::before{
+    content:'丢进菜篮子'
   }
-  .sourceDetail_content .source_video{
+  .sourceDetail_content .source-img{
     width: 100%;
   }
   .sourceDetail_content .source_name{
@@ -264,13 +263,13 @@
     font-size: 17px;
   }
   .sourceDetail_container .ingre_container .basket{
-   border: 2px solid black;
-   border-radius: 21px;
-   padding: 5px 15px;
+    border: 1px solid rgb(233, 233, 233);
+    border-radius: 21px;
+    padding: 5px 15px;
   }
   .ingre_content{
     margin: 0px 20px;
-    border-top: 1px solid #F5F5F5;
+    border-top: 1px solid #dbdbdb;
     padding: 12px 0px;
   }
   .sourceDetail_container .ingre_container .ingre_content .ingre_item{

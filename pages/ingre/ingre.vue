@@ -5,15 +5,15 @@
       <view class="left_ul">
         <view class="left_item" :class="currentSort == item ? 'left_item_active':''" v-for="(item,index) in sortlist" @click="getSort(item)" :key="index"  title="" note="">
       <image style="width: 40px;height: 40px;" v-if="currentSort == item" src="../../static/ingre_nav1.png" mode=""></image>  
-       <view class="">
+      <view class="">
           {{item}}
-       </view>
+      </view>
         </view>
       </view>
 		</view>
     <scroll-view scroll-y="true" :class="totalPrice>0 ? '':'ingre_right_kong'" class="ingre_right">
       <view class="ingre_detail" v-for="(item,index) in foods" :key="index">
-        <image @click="goingreDetail(item_id)" :src="item.imgUrl" mode=""></image>
+        <image @click="goingreDetail(item._id,item.food_name)" :src="item.imgUrl" mode=""></image>
         <view>
            <view class="ingre_guige">
              <view class="ingre_name">
@@ -24,8 +24,8 @@
              </view>
            </view>
            <view class="ingre_button">
-          <buy-cart :food="item" :user_id="user_id"></buy-cart>       
-           </view>
+          <buy-cart :food="item"></buy-cart>       
+          </view>
         </view>
       </view>      
     </scroll-view>          
@@ -39,21 +39,17 @@
       </view>
     <view class="goBuy" @click="goBuy" >选好了</view>
     </view>
-    
-    <van-transition show="iscartList" name="fade-up" custom-class="block">  
-    
-     <scroll-view :class="iscartList ? '.addCart_avtive':''" class="addCart_container" scroll-y="true"> 
+    <scroll-view :class="iscartList ? '.addCart_avtive':''" class="addCart_container" scroll-y="true"> 
           <view class="cartList_item" v-for="(item,index) in cartFoodList" :key="index">
-           <view class="food_name">
+          <view class="food_name">
               {{item.food_name}}
-           </view>
+          </view>
           <view class="food_infor">
             <text>x{{item.food_num}}</text> 
             <text>￥{{item.food_price}}</text>
           </view>      
           </view>          
       </scroll-view> 
-    </van-transition>
 	</div>
 </template>
 
@@ -63,15 +59,14 @@
 	export default {
 		data(){
 			return {
-				sortlist:['食物类别','酱油类别','奶制品','厨具类别'],
-				currentSort:'食物类别',
+				sortlist:['烘焙用粉','烘焙乳品','烘焙用糖','装饰调色','烘焙工具'],
+				currentSort:'烘焙用粉',
 				foods:{},
-				user_id:null,
 				showLoading:true,
 				cartFoodList:[],
-				totalPrice:null,
-        cartNum:null,
-        iscartList:false
+				totalPrice:0,
+        cartNum:0,
+        iscartList:false,
 			}
 		},
 		created(){
@@ -88,11 +83,10 @@
 		},
     onShow(){
       console.log('我触发了')
-			this.user_id = uni.getStorageSync('user_id')      
       this.initCart()
     },
 		computed:{
-			 ...mapState(['cartList']),
+      ...mapState(['cartList','user_id']),
 			shopCart: function (){
 				return {...this.cartList};
 			},
@@ -101,54 +95,34 @@
 			...mapMutations(['initCart']),
 			initCartList(){
         var that = this
-				console.log('我执行了')
 				let newArr = []
 				let cartFoodNum = 0
 				let num = 0
-				this.totalPrice = 0
-        this.cartNum = 0
-				this.cartFoodList = [];
-				console.log('shopCart1',this.shopCart)
+        this.totalPrice = 0
 				let user_id = this.user_id
 				let shopCart = this.shopCart
-				uniCloud.callFunction({
-					name: 'getCart',
-					data:{
-						user_id:user_id,
-					}
-				}).then(hasCart => {
-					console.log('hasCart',hasCart)
-          console.log('this.shopCart',this.shopCart)
-					if(hasCart.result.data.length){
-            that.shopCart = hasCart.result.data[0].cart_infor   
-               console.log(' this.shopCart',that.shopCart)
-            console.log('长度存在')
-					uniCloud.callFunction({
-					name: 'updateCart',
-					data:{
-						user_id:user_id,
-						cart_infor:shopCart
-					}
-				}).then(res => {
-					console.log(res.result.data)
-					this.sourceList = res.result.data
+				this.$api.commonCloud('getCart',{
+          user_id:user_id
+        }).then(hasCart => {
+					if(hasCart.data.length){
+					this.$api.commonCloud('updateCart',{
+            user_id:user_id,
+            cart_infor:shopCart
+          }).then(res => {
+            console.log('更新购物车成功',res);
 				})
 					}else{
-						uniCloud.callFunction({
-							name: 'addCart',
-							data:{
-								user_id:user_id,
-								cart_infor:shopCart
-							}
-						}).then(res => {
-							console.log(res.result.data)
-							this.sourceList = res.result.data
+						this.$api.commonCloud('addCart',{
+              user_id:user_id,
+              cart_infor:shopCart
+            }).then(res => {
+							console.log(res)
 						})
 					}
 				})
 
 				Object.keys(this.shopCart).forEach((item,index)=>{
-					console.log('item',item)
+          console.log('itemitem',item);
 					if(this.shopCart && this.shopCart[item]){
 					let foodItem = this.shopCart[item]
 					num += foodItem.food_num
@@ -173,34 +147,36 @@
 				})
 			},
 			getSort(item){
+				console.log('itemm',item)
         uni.showLoading({
           title: "加载中...",
           mask:false
         })
 				this.currentSort = item
-				let footSort = this.currentSort
-				uniCloud.callFunction({
-					name: 'getFoods',
-					data:{
-						food_sort:footSort
-					}
-				}).then(res => {
-					console.log('this.foods',res.result.data)
-					this.foods = res.result.data 
+				this.$api.commonCloud('getFoods',{
+          food_sort:this.currentSort
+        }).then(res => {
+					console.log('this.foods',res)
+					this.foods = res.data 
           uni.hideLoading()
 				})
 				console.log('渲染完成')
 				this.showLoading = false
-       
 			},
       goBuy(){
-        uni.navigateTo({
-          url:`/pages/buylist/buylist`
-        })
+        if(this.user_id){
+          uni.navigateTo({
+            url:`/pages/buylist/buylist`
+          })
+        }else{
+          uni.navigateTo({
+            url:`/pages/wxlogin/wxlogin`
+          })
+        }
       },
-      goingreDetail(ingreId){
+      goingreDetail(ingreId,name){
         uni.navigateTo({
-          url:`/pages/ingreDetail/ingreDetail?id=${ingreId}`
+          url:`/pages/ingreDetail/ingreDetail?id=${ingreId}&name=${name}`
         })
       }
 			

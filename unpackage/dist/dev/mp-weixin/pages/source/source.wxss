@@ -8,7 +8,6 @@
           align-items: center;
   padding: 5px 20px;
   height: 35px;
-  
   border-bottom: 1px solid #f5f5f5;
 }
 .input_container input{
@@ -33,25 +32,25 @@
   margin: 10px 20px;
 }
 .source_item{
+  height: 80px;
+  margin-bottom: 15px;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  height: 80px;
-  margin-bottom: 15px;
 }
-.source_item image{
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-          flex: 1;
+.source-img{
+  width: 30%;
   height: 100%;
+}
+.source-img image{
+  height: 100%;
+  width: 100%;
   -webkit-border-radius: 5px;
           border-radius: 5px;
 }
 .source_item .source_infor{
+  width: 70%;
   margin-left: 10px;
-  -webkit-box-flex: 2;
-  -webkit-flex: 2;
-          flex: 2;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -62,21 +61,26 @@
 }
 .source_item .source_infor .source_name{
   font-weight: bold;
-  font-size: 20px;
+  font-size: 16px;
 }
 .source_item .source_infor .source_description{
-  font-size: 15px;
+  font-size: 13px;
   color: #555;
   max-width: 215px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  margin: 10px 0;
 }
 .source_item .source_infor .source_ingre{
-  max-width: 215px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+          flex-wrap: wrap;
 }
 .source_item .source_infor .source_ingre text{
   background-color: #FDAB61;
@@ -88,6 +92,7 @@
           box-sizing: border-box;
   margin-right: 5px;
   font-size: 10px;
+  margin-top: 3px;
 }
 .content_container .search_history .history_title{
   font-size: 20px;

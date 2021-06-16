@@ -5,13 +5,16 @@
 .noStar{
 		background-color: #FF0000;
 }
-.onBasket1{
-    background-color: #007AFF;
+	/*   .onBasket1,.offBasket1{
+    background-color: #d8d8d8;
+  } */
+.onBasket::before{
+    content:'从菜篮子中移除'
 }
-.offBasket1{
-    background-color: #FF0000;
+.offBasket::before{
+    content:'丢进菜篮子'
 }
-.sourceDetail_content .source_video{
+.sourceDetail_content .source-img{
     width: 100%;
 }
 .sourceDetail_content .source_name{
@@ -47,14 +50,14 @@
     font-size: 17px;
 }
 .sourceDetail_container .ingre_container .basket{
-   border: 2px solid black;
-   -webkit-border-radius: 21px;
-           border-radius: 21px;
-   padding: 5px 15px;
+    border: 1px solid rgb(233, 233, 233);
+    -webkit-border-radius: 21px;
+            border-radius: 21px;
+    padding: 5px 15px;
 }
 .ingre_content{
     margin: 0px 20px;
-    border-top: 1px solid #F5F5F5;
+    border-top: 1px solid #dbdbdb;
     padding: 12px 0px;
 }
 .sourceDetail_container .ingre_container .ingre_content .ingre_item{

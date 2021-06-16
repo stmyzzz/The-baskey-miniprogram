@@ -16,7 +16,7 @@
         </view>  
       </view>
 		<view class="addCart_container" >
-      <view class="cart_title">餐品详情</view>
+      <view class="cart_title">食材详情</view>
       <view class="cart_main" v-for="(item,index) in cartFoodList" :key="index" v-if="item.food_num>0">
         <view class="main_left">
         <text>{{item.food_name}}</text>          
@@ -32,7 +32,7 @@
       </view>
 		</view>
     <view class="pay_container">
-      <text class="pay_total">{{totalPrice}}</text>   
+      <text class="pay_total">￥{{totalPrice}}</text>   
       <button type="primary" class="pay" form-type="submit" >立即支付</button>
     </view>
  
@@ -53,8 +53,7 @@
         cartId:null
 			}
 		},
-    onLoad(options){
-      let cartFoodList = options.cartFoodList
+    onLoad(){
       this.user_id = uni.getStorageSync('user_id')
       this.initData()
     },
@@ -110,10 +109,10 @@
               })
           })
         }else{
-           uni.showToast({
-             title:"不能为空!",
-             duration:2000
-           })
+          uni.showToast({
+            title:"不能为空!",
+            icon:'none'
+          })
         }
       }
       

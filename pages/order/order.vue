@@ -7,7 +7,7 @@
           <text>食材集市</text>
 		    </view>
         <view class="header_right">
-          <text>{{item.order_status}}</text>
+          <text>{{stateMap[item.order_status]}}</text>
         </view> 
 		  </view>
       <view class="order_main">
@@ -46,7 +46,8 @@
 		data() {
 			return {
         user_id:null,
-        orderList:{}
+        orderList:{},
+		stateMap:['待发货','待签收','待评价','订单已完成']
 				
 			}
 		},
@@ -55,6 +56,9 @@
       this.userId = userId
       this.initData()
     },
+	computed:{
+		
+	},
 		methods: {
 			initData(){
         let user_id = this.userId

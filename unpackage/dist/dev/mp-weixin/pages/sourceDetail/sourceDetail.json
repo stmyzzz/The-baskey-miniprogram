@@ -1,5 +1,7 @@
 {
   "navigationBarTitleText": "detail",
   "enablePullDownRefresh": false,
-  "usingComponents": {}
+  "usingComponents": {
+    "basket-icon": "/components/basket-icon"
+  }
 }

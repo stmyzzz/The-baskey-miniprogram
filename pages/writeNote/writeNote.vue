@@ -102,18 +102,14 @@
                       })
                 }else{
                   console.log('不能执行')
-                  console.log(imgUrlArr.length)
-                  console.log(filePath.length)
                 }
               },
               fail() {},
               complete(){}
           });
         })
-       
-
       },
-     uploadImg(){
+      uploadImg(){
         var that = this
         uni.chooseImage({
           count:1,
@@ -125,28 +121,6 @@
           }
         })
       }
-/*             onRead(file){ 
-        console.log('imginfo',this.imgfile)
-        console.log(file)
-        let filePath = file.url
-        上传到云端
-        uniCloud.uploadFile({
-        filePath: filePath,
-        cloudPath: 'a.jpg',
-       onUploadProgress: function(progressEvent) {
-          console.log(progressEvent);
-          var percentCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-          },
-          success:res=>{
-          console.log(res.filePath)
-           console.log(this.imgfile)
-          },
-          fail() {},
-          complete() {}
-            });
-      } */
 		}
 	}
 </script>

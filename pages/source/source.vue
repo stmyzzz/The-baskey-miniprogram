@@ -1,6 +1,5 @@
 <template>
 	<div class="source_container">
-    
     <view class="input_container">
 		<input type="text" @focus="this.hasHistory = true" @blur="this.hasHistory = false" @confirm="onSearch" value="searchValue" confirm-type="search" v-model="searchValue" placeholder="想烘培点什么呢？"/>
     <text v-if="hasHistory" @click="getAll">x</text>
@@ -20,22 +19,27 @@
 
       </view>
       <view v-else class="source_item" @click="navToDetailSource(item._id,item.source_name)" v-for="(item,index) in sourceList" :key="index">
-        <view style="width: 95px;" class="scoure_img">
+        <view style="width: 95px;" class="source-img">
           <image style="width: 100%;" :src="item.imgUrl" mode="scaleToFill"></image>  
         </view>
         <view class="source_infor">
           <view class="source_name">{{item.source_name}}</view>
           <view class="source_description">{{item.descrptions}}</view>
           <view class="source_ingre">
-            <text v-for="(ingreitem,ingreindex) in item.ingredients" :key="ingreindex">{{ingreitem.name}}</text>
+            <text v-for="(ingreitem,ingreindex) in item.ingredients.slice(0, 4) " :key="ingreindex">
+              {{ingreitem.name}}</text>
           </view>
         </view>
       </view>      
     </view>
+    <basket-icon :isBasket="isBasket">
+    </basket-icon>
 	</div>
 </template>
 
 <script>
+  import {mapState,mapMutations} from 'vuex'
+  import BasketIcon from '../../components/basket-icon.vue' 
 	export default{
 		data(){
 			return {
@@ -43,17 +47,27 @@
 				sourceList:{},
         hasHistory:false,
         hasContent:false,
-        historyList:[]
+        historyList:[],
 			}
 		},
 		onShow(){
 			this.initData();
 		},
+    components:{
+      BasketIcon
+    },
+    computed:{
+      ...mapState(['isBasket','user_id'])
+    },
 		methods:{
+      ...mapMutations(['setBasket']),
       initData(){
         uni.showLoading({
           title: "加载中..."
         })
+        if(this.user_id){
+          
+        }
         this.getSource()
         let history = uni.getStorageSync('historyList')
         if(history){
@@ -64,9 +78,7 @@
       },
 			getSource(){
 				console.log('123')
-				uniCloud.callFunction({
-					name: 'getSource',
-				}).then(res => {
+				this.$api.commonCloud('getSource').then(res => {
 					console.log(res.result.data)
 					this.sourceList = res.result.data
 				})
@@ -139,9 +151,9 @@
         this.getSource()
       },
       navToDetailSource(sourceId,name){
-      	uni.navigateTo({
-      		url: `/pages/sourceDetail/sourceDetail?id=${sourceId}&name=${name}`
-      	})
+        uni.navigateTo({
+          url: `/pages/sourceDetail/sourceDetail?id=${sourceId}&name=${name}`
+        })
       }
 		}
 	}
@@ -153,7 +165,6 @@
     align-items: center;
     padding: 5px 20px;
     height: 35px;
-    
     border-bottom: 1px solid #f5f5f5;
   }
   .input_container input{
@@ -172,38 +183,44 @@
     margin: 10px 20px;
   }
   .source_item{
-    display: flex;
     height: 80px;
     margin-bottom: 15px;
+    display: flex;
   } 
-  .source_item image{
-    flex: 1;
+  .source-img{
+    width: 30%;
     height: 100%;
+  }
+  .source-img image{
+    height: 100%;
+    width: 100%;
     border-radius: 5px;
   }
   .source_item .source_infor{
+    width: 70%;
     margin-left: 10px;
-    flex: 2;
     display: flex;
     flex-direction: column;
   }
   .source_item .source_infor .source_name{
     font-weight: bold;
-    font-size: 20px;
+    font-size: 16px;
   }
   .source_item .source_infor .source_description{
-    font-size: 15px;
+    font-size: 13px;
     color: #555;
     max-width: 215px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    margin: 10px 0;
   }
   .source_item .source_infor .source_ingre{
-    max-width: 215px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
   }
   .source_item .source_infor .source_ingre text{
     background-color: #FDAB61;
@@ -213,6 +230,7 @@
     box-sizing: border-box;
     margin-right: 5px;
     font-size: 10px;
+    margin-top: 3px;
   }
   .content_container .search_history .history_title{
     font-size: 20px;

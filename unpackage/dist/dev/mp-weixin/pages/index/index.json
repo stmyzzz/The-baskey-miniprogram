@@ -1,7 +1,5 @@
 {
   "navigationBarTitleText": "THE BAKERY",
   "navigationStyle": "custom",
-  "usingComponents": {
-    "show-loading": "/components/showLoading"
-  }
+  "usingComponents": {}
 }

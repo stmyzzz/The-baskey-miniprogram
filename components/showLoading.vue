@@ -12,7 +12,7 @@
 
 <script>
 	export default {
-		name:"showLoading",
+		name:'showLoading',
 		data() {
 			return {
 				

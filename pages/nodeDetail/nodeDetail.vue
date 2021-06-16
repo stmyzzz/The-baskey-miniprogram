@@ -11,20 +11,14 @@
           <image :src="item.user_imgUrl" mode=""></image>
         </view>
         <view class="user_name">
-          {{item.user_name}}
+          {{item.note_name}}
         </view>
       </view>
-		 <!-- {{item.note_name}}
-      {{item.note_content}}
-      {{noteDate}}
-      <view @click="removeNote(item._id)" class="">
-        删除这条笔记
-      </view> -->
       <view class="note_content">
         <view class="note_title">
-          {{item.note_name}}
+          {{item.note_title}}
         </view>     
-        <view class="note_main">
+        <view class="note_main">w
           {{item.note_content}}
         </view>	 
       </view>
