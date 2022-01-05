@@ -8,25 +8,24 @@
 			</swiper-item>
 		</swiper>
 		<!-- 食谱信息 -->
-    <view class="index_detail">
-        <view class="source_container">
-				<view class="source_title">食谱
-        </view>
-        <view class="source_content">
-				<view class="source_item" v-for="(item,index) in Sources" :key="index" @click="navToDetailSource(item._id,item.source_name)">
-					<image :src="item.imgUrl" mode="scaleToFill"></image>
-				</view>          
-		</view>
-    </view>
+    <view class="index_main_wrapper">
+      <view class="cookbook_wrapper">
+				<view class="cookbook_title">食谱</view>
+        <view class="cook_items">
+				  <view class="cook_item" v-for="(item,index) in Sources" :key="index" @click="navToDetailSource(item._id,item.source_name)">
+			  		<image :src="item.imgUrl" mode="scaleToFill" />
+			  	</view>          
+	   	  </view>
+      </view>
 		<!-- 食材信息 -->
-		<view class="ingre_container">
-        <view class="ingre_title">精选食材</view>
-        <view class="ingre_content">
+		<view class="ingre_wrapper">
+      <view class="ingre_title">精选食材</view>
+      <view class="ingre_content">
         <view class="ingre_item" v-for="(item,index) in foods" @click="navToDetailIngre(item._id,item.food_name)" :key="index">
-        	<image style="width: 50px;height: 50px;" :src="item.imgUrl" mode="scaleToFill"></image>
+        	<image :src="item.imgUrl" mode="scaleToFill"></image>
           <view class="ingre_item_name">{{item.food_name}}</view>
         </view>          
-        </view>
+      </view>
 		</view>
     
 		
@@ -118,73 +117,74 @@
 	}
 </script>
 
-<style>
+<style lang='less' scoped>
   .wx-swiper-dots.wx-swiper-dots-horizontal{
   margin-bottom: 20px;
   }
-  .index_detail{
+	.swiper{
+	  width: 100%;
+	  height: 260px;
+		.swiper_item image{
+	  width: 100%;
+	  height: 100%;
+	  }
+	}
+  .index_main_wrapper{
     position: absolute;
     top: 240px;
-    width: 100%;
-  }
-  .swiper{
-    width: 100%;
-    height: 260px;
-  }
-  .swiper_item image{
-    width: 100%;
-    height: 100%;
-  }
-  .hudu{    
-   border-top-right-radius: 20px;
-    border-top-left-radius: 20px;
-    background-color: #fff;
+    width: 100%;  
+		.cookbook_wrapper{
+      padding:0 10px 5px 10px;
+      border-top-right-radius: 12px;
+      border-top-left-radius: 12px;
+      background-color: #fff;
+			.cookbook_title{
+			  font-size: 16px;
+			  font-weight: bold;
+			  padding: 12px 0;
+			}
+			.cook_items{
+			  display: flex;
+			  align-item: center;
+			}
+			.cook_item{
+			  flex: 1;
+			  padding: 0 5px;
+				image {
+			    width: 100%;
+		  	  height: 114px;
+			    border-radius: 4px;
+		  	}
+			}
     }
-  .source_container{
+  }
+  .ingre_wrapper{
     padding:0 10px 5px 10px;
-    border-top-right-radius: 20px;
-     border-top-left-radius: 20px;
-     background-color: #fff;
+		.ingre_title{
+      font-size: 16px;
+      font-weight: bold;
+      padding: 14px 0;
+    } 
+		.ingre_content{
+      display: flex;
+      align-items: center;
+			.ingre_item{
+        flex: 1;
+        text-align: center;
+				image{
+					width:50px;
+					height:50px;
+				}
+				.ingre_item_name{
+          font-size: 12px;
+        }
+      }
+    }
   }
-  .source_content{
-    display: flex;
-    align-items: center;
-  }
-  .source_title{
-    font-size: 20px;
-    font-weight: bold;
-    padding: 10px 0;
-  }
-  .source_item{
-    flex: 1;
-    text-align: center;
-    padding: 0 3px;
-  }
-  .source_item image{
-    width: 100%;
-    height: 114px;
-    border-radius: 5px;
-  }
+ 
   
-  .ingre_container{
-    padding: 5px 10px;
-  }
-  .ingre_content{
-    display: flex;
-    align-items: center;
-  }
-  .ingre_title{
-    font-size: 20px;
-    font-weight: bold;
-    margin: 10px 0;
-  }
-  .ingre_item{
-    flex: 1;
-    text-align: center;
-  }
-  .ingre_item_name{
-    font-size: 12px;
-  }
+  
+  
   .note_container{
     width: 95%;
     margin: 10px auto;
