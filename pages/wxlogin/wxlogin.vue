@@ -1,7 +1,7 @@
 <template>
-	<view class="wxlogin">
+	<view class="wxlogin_wrapper">
 		
-		  <view class="login_content">
+		  <view class="login_main">
 		    <image style="width: 100px;height: 100px;" src="../../static/ingre_nav2.png" mode=""></image>
 		    <view class="content1">
 		      烘培的麦香，人生的芬芳，登录查看收藏。
@@ -21,7 +21,6 @@
 		data() {
 			return {
         code:null
-				
 			}
 		},
 		methods: {

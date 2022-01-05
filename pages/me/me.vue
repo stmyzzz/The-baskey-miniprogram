@@ -1,6 +1,6 @@
 <template>
   <div class="me_container">
-    <show-loading v-if="isShow"></show-loading>
+    <loading-layout v-if="isShow"></loading-layout>
     <view v-if="user_id" class="login_true">
     <view class="me_infor">
       <view  class="user">
@@ -17,10 +17,9 @@
             <text class="user_sex" v-else>
               女
             </text>
-            <text class="user_address">{{userInfo.country}} {{userInfo.province}} {{userInfo.city}}</text>
+            <text v-if='userInfo.country' class="user_address">{{userInfo.country}} {{userInfo.province}} {{userInfo.city}}</text>
           </view>
         </view>
-
       </view> 
       <view class="user_need">
         <view class="need_left">
@@ -41,7 +40,6 @@
          <image style="width: 30px;height: 30px;display: block;" src="../../static/setting.png" mode=""></image>
       </view>        
       </view>
-
      </view>
     </view>
     <view class="me_content">
@@ -96,7 +94,7 @@
 </template>
 
 <script>
-  import showLoading from '../../components/showLoading'
+  import loadingLayout from '../../components/loading-layout/loading-layout.vue'
   import {
     mapMutations,
     mapState
@@ -121,7 +119,7 @@
       ])
     },
     components:{
-      showLoading
+      loadingLayout
     },
     onShow() {
       this.userInfo = uni.getStorageSync('userInfo');

@@ -6,18 +6,10 @@
   background: #FF4136;
   width: 45px;
   height: 45px;
-  -webkit-border-radius: 50%;
-          border-radius: 50%;
-  display: -webkit-box;
-  display: -webkit-flex;
+  border-radius: 50%;
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-          justify-content: center;
-  -webkit-transition: all .5s;
+  align-items: center;
+  justify-content: center;
   transition: all .5s;
 }
 ._img{

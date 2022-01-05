@@ -4,7 +4,7 @@
 		<!-- 轮播 -->
 		<swiper class="swiper" :indicator-dots="true" :autoplay="true" indicator-active-color="#FDAB61" :circular="true" :interval="5000" :easing-function="linear" :duration="1000">
 			<swiper-item class="swiper_item" v-for="(item,index) in banners" :key="index">
-        <image  :src="item.imgUrl" mode=""></image>
+        <image :src="item.imgUrl" mode=""></image>
 			</swiper-item>
 		</swiper>
 		<!-- 食谱信息 -->

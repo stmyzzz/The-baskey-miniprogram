@@ -3,6 +3,6 @@
   "navigationStyle": "custom",
   "disableScroll": true,
   "usingComponents": {
-    "show-loading": "/components/showLoading"
+    "loading-layout": "/components/loading-layout/loading-layout"
   }
 }

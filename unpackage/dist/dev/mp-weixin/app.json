@@ -71,6 +71,5 @@
     "van-tabs": "./wxcomponents/vant/tabs/index",
     "van-steps": "./wxcomponents/vant/steps/index",
     "van-rate": "./wxcomponents/vant/rate/index"
-  },
-  "sitemapLocation": "sitemap.json"
+  }
 }

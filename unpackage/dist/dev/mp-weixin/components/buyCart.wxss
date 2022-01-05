@@ -1,23 +1,15 @@
 
 .buyCart_container{
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
 }
 .buyCart_container .food_num{
   min-width: 25px;
   text-align: center;
 }
 .buyCart_container .cart_icon{
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
 }
 
 

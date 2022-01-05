@@ -3,16 +3,9 @@
     margin: 0 auto;
 }
 .ingre_container .item_top.data-v-60f2f9d8{
-    display: -webkit-box;
-    display: -webkit-flex;
     display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
-            flex-direction: column;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-            align-items: center;
+    flex-direction: column;
+    align-items: center;
 }
 .ingre_container .item_top .ingre_name.data-v-60f2f9d8{
     font-weight: bold;
@@ -27,11 +20,8 @@
     clear: both;
 }
 .ingre-wrap.data-v-60f2f9d8{
-    display: -webkit-box;
-    display: -webkit-flex;
     display: flex;
-	-webkit-flex-wrap: wrap;
-	        flex-wrap: wrap;
+	flex-wrap: wrap;
 }
 .dapei-item.data-v-60f2f9d8{
     width: 25%;  
@@ -39,8 +29,7 @@
 }
 .img-wrap.data-v-60f2f9d8{
 	  padding: 5px;
-	  -webkit-box-sizing: border-box;
-	          box-sizing: border-box;
+	  box-sizing: border-box;
 	  width: 73px;
 	  height: 73px;
 }

@@ -13,12 +13,8 @@
     */
 }
 .note_user{
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   padding: 15px 20px 10px 20px;
 }
 .note_user .user_img{
@@ -28,8 +24,7 @@
 .user_img image{
   width: 100%;
   height: 100%;
-  -webkit-border-radius: 50%;
-          border-radius: 50%;
+  border-radius: 50%;
 }
 .user_name{
   margin-left: 10px;

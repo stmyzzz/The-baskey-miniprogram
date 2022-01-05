@@ -5,14 +5,13 @@ const apiCloud = (cloudName, mydata) => {
 			data: mydata,
       success:(res)=>{
         uni.showLoading({
-             title: "加载中...?"
+             title: "加载中..."
         })
         reslove(res.result)
         uni.hideLoading()
       },
       fail:(res)=>{
         reject(err)
-        
       }
 		})
 		.then(
