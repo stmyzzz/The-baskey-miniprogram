@@ -1,48 +1,51 @@
 
+.isShowAll{
+		text-align: center;
+}
 .note_container{
-  display: flex;
-  margin-top: 10px;
+    display: flex;
+    margin-top: 10px;
 }
 .note_ul{
-  width: 50%;
+    width: 50%;
 }
 .note_item{
-  width: 100%;
-  float: left;
-  margin-bottom: 10px;
+    width: 100%;
+    float: left;
+    margin-bottom: 10px;
 }
 .note_item .item_content{
-  padding: 0 10px;
-  font-size: 13px;
-  color: #555;
-  overflow: hidden; /* 多余内容隐藏显示*/
-  white-space: nowrap; /* 不换行*/
-  text-overflow: ellipsis; /* 多行文本溢出*/
+    padding: 0 10px;
+    font-size: 13px;
+    color: #555;
+    overflow: hidden; /* 多余内容隐藏显示*/
+    white-space: nowrap; /* 不换行*/
+    text-overflow: ellipsis; /* 多行文本溢出*/
 }
 .note_item .item_img{
-  width: 100%;
-  padding: 0 10px;
-  box-sizing: border-box;
+    width: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
 }
 .note_item .item_img image{
-  width: 100%;
-  border-radius:5px;
+    width: 100%;
+    border-radius:5px;
 }
 .note_item .item_profile{
-  padding: 0 10px;
-  display: flex;
-  align-items: center;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
 }
 .note_item .item_profile .note_user_img{
-  border-radius: 50%;
-  width:40rpx;
-  height: 20px;
+    border-radius: 50%;
+    width:40rpx;
+    height: 20px;
 }
 .note_item .item_profile .note_user_name{
-  margin-left: 5rpx;
-  font-size: 12px;
-  font-weight: bold;
+    margin-left: 5rpx;
+    font-size: 12px;
+    font-weight: bold;
 }
-
+  
 
 

@@ -1,101 +1,107 @@
 
+.mt-10{
+		padding: 10px;
+}
+.isShowAll{
+		text-align: center;
+}
 .input_container{
-  display: flex;
-  align-items: center;
-  padding: 5px 20px;
-  height: 35px;
-  border-bottom: 1px solid #f5f5f5;
+    display: flex;
+    align-items: center;
+    padding: 5px 20px;
+    height: 35px;
+    border-bottom: 1px solid #f5f5f5;
 }
 .input_container input{
-  flex: 5;
+    flex: 5;
 }
 .input_container .submit{
-  flex: 1;
-  color: red;
-  text-align: right;
+    flex: 1;
+    color: red;
+    text-align: right;
 }
 .input_container .cancel{
-  flex: 1;
-  text-align: right;
+    flex: 1;
+    text-align: right;
 }
 .content_container{
-  margin: 10px 20px;
+    margin: 10px 20px;
 }
 .source_item{
-  height: 80px;
-  margin-bottom: 15px;
-  display: flex;
+    height: 80px;
+    margin-bottom: 15px;
+    display: flex;
 }
 .source-img{
-  width: 30%;
-  height: 100%;
+    width: 30%;
+    height: 100%;
 }
 .source-img image{
-  height: 100%;
-  width: 100%;
-  border-radius: 5px;
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
 }
 .source_item .source_infor{
-  width: 70%;
-  margin-left: 10px;
-  display: flex;
-  flex-direction: column;
+    width: 70%;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
 }
 .source_item .source_infor .source_name{
-  font-weight: bold;
-  font-size: 16px;
+    font-weight: bold;
+    font-size: 16px;
 }
 .source_item .source_infor .source_description{
-  font-size: 13px;
-  color: #555;
-  max-width: 215px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  margin: 10px 0;
+    font-size: 13px;
+    color: #555;
+    max-width: 215px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 10px 0;
 }
 .source_item .source_infor .source_ingre{
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  display: flex;
-  flex-wrap: wrap;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
 }
 .source_item .source_infor .source_ingre text{
-  background-color: #FDAB61;
-  color: #fff;
-  border-radius: 5px;
-  padding: 0px 5px;
-  box-sizing: border-box;
-  margin-right: 5px;
-  font-size: 10px;
-  margin-top: 3px;
+    background-color: #FDAB61;
+    color: #fff;
+    border-radius: 5px;
+    padding: 0px 5px;
+    box-sizing: border-box;
+    margin-right: 5px;
+    font-size: 10px;
+    margin-top: 3px;
 }
 .content_container .search_history .history_title{
-  font-size: 20px;
-  font-weight: bold;
-  padding: 5px;
-  border-bottom: 1px solid #f5f5f5;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 5px;
+    border-bottom: 1px solid #f5f5f5;
 }
 .content_container .search_history .history_title .remove_history{
-  float: right;
-  font-size: 15px;
-  font-weight: 200;
-  color: #666;
-  line-height: 35px;
+    float: right;
+    font-size: 15px;
+    font-weight: 200;
+    color: #666;
+    line-height: 35px;
 }
 .content_container .search_history .history_content{
-  margin-top: 10px;
-  display: flex;
-  flex-wrap: wrap;
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
 }
 .content_container .search_history .history_item{
-  background-color: #FDAB61;
-  color: #fff;
-  border-radius: 5px;
-  padding: 5px 8px;
-  font-size: 15px;
-  margin-right: 5px;
-  margin-top: 5px;
+    background-color: #FDAB61;
+    color: #fff;
+    border-radius: 5px;
+    padding: 5px 8px;
+    font-size: 15px;
+    margin-right: 5px;
+    margin-top: 5px;
 }
 

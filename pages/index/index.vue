@@ -37,7 +37,7 @@
       <view class="note_items">
        <view class="note_item" v-for="(item,index) in notes" :key="index" @click="goNoteDetail(item._id)">
           <view class="item_img">
-            <image :src="item.note_imgUrl[0]" mode="aspectFit" />
+            <image :src="item.note_imgUrl[0]" mode="scaleToFill" />
 					  <span class="item_content">
               {{item.note_name}}
             </span>
@@ -63,18 +63,6 @@
 				foods:{},
 				notes:[],
         isShow:true,
-				limit:4,
-				Data:{
-					list: [],
-				  listLeft: [],
-				  listRight: [],
-				},
-				loadAll:false,
-				otherData: {
-				  itemOthersHeight: 100,  // px 列表每一项除了图片之外的元素的高度
-				  leftHeight: 0,	// 两列中左list的总高度
-				  rightHeight: 0	// 两列中右list的总高度
-				},
 			}
 		},
 		components:{
@@ -83,16 +71,6 @@
 			this.initData();
 		},
 		methods: {
-			loading(e){
-				this.$api.commonCloud('getNote',{
-				  limit:this.limit+=2
-				}).then(res => {
-					console.log(res)
-					this.notes = res.data
-					this.Data.list = res.data
-				  this.isShow = false
-				})
-			},
 			initData() {
         this.$api.commonCloud('getSource',{
           limit:2
@@ -108,11 +86,10 @@
           this.foods = res.data
         })
 				this.$api.commonCloud('getNote',{
-          limit:this.limit
+          limit:4
         }).then(res => {
 					console.log(res)
 					this.notes = res.data
-					this.Data.list = res.data
           this.isShow = false
 				})
 			},

@@ -8,10 +8,11 @@
 		},
 		onHide: function() {
 			console.log('App Hide')
-		}
+		}/*  */
 	}
 </script>
 
-<style>
+<style lang='scss'>
+	@import "@/uni_modules/uview-ui/index.scss";
 	/*每个页面公共css */
 </style>

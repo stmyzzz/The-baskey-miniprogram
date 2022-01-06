@@ -10,7 +10,8 @@
 		{
 		"path": "pages/source/source",
 		"style": {
-			"navigationBarTitleText": "烘培种类"
+			"navigationBarTitleText": "烘培种类",
+			"disableScroll": true
 		}
 		},
 		{

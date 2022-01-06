@@ -194,19 +194,7 @@ var _default =
       banners: {},
       foods: {},
       notes: [],
-      isShow: true,
-      limit: 4,
-      Data: {
-        list: [],
-        listLeft: [],
-        listRight: [] },
-
-      loadAll: false,
-      otherData: {
-        itemOthersHeight: 100, // px 列表每一项除了图片之外的元素的高度
-        leftHeight: 0, // 两列中左list的总高度
-        rightHeight: 0 // 两列中右list的总高度
-      } };
+      isShow: true };
 
   },
   components: {},
@@ -215,37 +203,26 @@ var _default =
     this.initData();
   },
   methods: {
-    loading: function loading(e) {var _this = this;
-      this.$api.commonCloud('getNote', {
-        limit: this.limit += 2 }).
-      then(function (res) {
-        console.log(res);
-        _this.notes = res.data;
-        _this.Data.list = res.data;
-        _this.isShow = false;
-      });
-    },
-    initData: function initData() {var _this2 = this;
+    initData: function initData() {var _this = this;
       this.$api.commonCloud('getSource', {
         limit: 2 }).
       then(function (res) {
-        _this2.Sources = res.data;
+        _this.Sources = res.data;
       });
       this.$api.commonCloud('getBanners').then(function (res) {
-        _this2.banners = res.data;
+        _this.banners = res.data;
       });
       this.$api.commonCloud('getAllFoods', {
         limit: 4 }).
       then(function (res) {
-        _this2.foods = res.data;
+        _this.foods = res.data;
       });
       this.$api.commonCloud('getNote', {
-        limit: this.limit }).
+        limit: 4 }).
       then(function (res) {
         console.log(res);
-        _this2.notes = res.data;
-        _this2.Data.list = res.data;
-        _this2.isShow = false;
+        _this.notes = res.data;
+        _this.isShow = false;
       });
     },
     navToDetailSource: function navToDetailSource(sourceId, name) {

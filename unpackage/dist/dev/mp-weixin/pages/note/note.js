@@ -93,6 +93,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components
+try {
+  components = {
+    uLoadingIcon: function() {
+      return Promise.all(/*! import() | uni_modules/uview-ui/components/u-loading-icon/u-loading-icon */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uview-ui/components/u-loading-icon/u-loading-icon")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uview-ui/components/u-loading-icon/u-loading-icon.vue */ 343))
+    }
+  }
+} catch (e) {
+  if (
+    e.message.indexOf("Cannot find module") !== -1 &&
+    e.message.indexOf(".vue") !== -1
+  ) {
+    console.error(e.message)
+    console.error("1. 排查组件名称拼写是否正确")
+    console.error(
+      "2. 排查组件是否符合 easycom 规范，文档：https://uniapp.dcloud.net.cn/collocation/pages?id=easycom"
+    )
+    console.error(
+      "3. 若组件不符合 easycom 规范，需手动引入，并在 components 中注册该组件"
+    )
+  } else {
+    throw e
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -164,21 +187,52 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default =
 {
   data: function data() {
     return {
-      noteList: {} };
-
+      noteList: [],
+      limit: 10,
+      isShowAll: false,
+      isListLoading: false };
 
   },
   onShow: function onShow() {
     this.initData();
   },
-  methods: {
-    initData: function initData() {var _this = this;
-      this.$api.commonCloud('getNote').then(function (res) {
+  onReachBottom: function onReachBottom() {var _this = this;
+    if (this.noteList.length === this.total) {
+      this.isShowAll = true;
+    } else {
+      this.isListLoading = true;
+      console.log(this.isShowAll);
+      this.$api.commonCloud('getNote', {
+        limit: this.limit += 2 }).
+      then(function (res) {
+        _this.isListLoading = false;
         _this.noteList = res.data;
+      });
+    }
+
+  },
+  methods: {
+    initData: function initData() {var _this2 = this;
+      this.$api.commonCloud('getNote', {
+        limit: this.limit }).
+      then(function (res) {
+        _this2.noteList = res.data;
+      });
+      this.$api.commonCloud('getNote').then(function (res) {
+        _this2.total = res.data.length;
       });
     },
     goNoteDetail: function goNoteDetail(itemId) {

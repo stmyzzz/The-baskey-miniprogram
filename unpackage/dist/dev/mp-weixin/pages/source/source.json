@@ -1,6 +1,11 @@
 {
   "navigationBarTitleText": "烘培种类",
+  "disableScroll": true,
   "usingComponents": {
+    "u-loading-page": "/uni_modules/uview-ui/components/u-loading-page/u-loading-page",
+    "u-list": "/uni_modules/uview-ui/components/u-list/u-list",
+    "u-loading-icon": "/uni_modules/uview-ui/components/u-loading-icon/u-loading-icon",
+    "u-empty": "/uni_modules/uview-ui/components/u-empty/u-empty",
     "basket-icon": "/components/basket-icon"
   }
 }

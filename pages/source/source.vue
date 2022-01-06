@@ -1,37 +1,60 @@
 <template>
 	<div class="source_container">
     <view class="input_container">
-		<input type="text" @focus="this.hasHistory = true" @blur="this.hasHistory = false" @confirm="onSearch" value="searchValue" confirm-type="search" v-model="searchValue" placeholder="想烘培点什么呢？"/>
+		<input type="text" @focus="this.hasHistory = 
+		true" focus @blur="this.hasHistory = false,getCookBook()"
+		 @confirm="handleSearch" 
+		 confirm-type="search" v-model="searchFilter" 
+		 placeholder="想烘培点什么呢？"/>
     <text v-if="hasHistory" @click="getAll">x</text>
-		<view class="submit" type="default" @click="onSearch">搜索</view>    
-    <view v-if="hasHistory" class="cancel">取消</view>
+    <view v-if="hasHistory" @click="getAll" class="cancel">取消</view>
     </view>
-    <view  class="content_container">
-      <view v-if="hasHistory" class="search_history">
-        <view class="history_title">
-          搜索历史  <text class="remove_history" @click="removeHistory">清空</text>
-        </view>
-        <view class="history_content">
-        <text @click="onhistorySearch(item)" v-for="(item,index) in historyList" :key="index" class="history_item">
-          {{item}}
-        </text>          
-        </view>
-
-      </view>
-      <view v-else class="source_item" @click="navToDetailSource(item._id,item.source_name)" v-for="(item,index) in sourceList" :key="index">
-        <view style="width: 95px;" class="source-img">
-          <image style="width: 100%;" :src="item.imgUrl" mode="scaleToFill"></image>  
-        </view>
-        <view class="source_infor">
-          <view class="source_name">{{item.source_name}}</view>
-          <view class="source_description">{{item.descrptions}}</view>
-          <view class="source_ingre">
-            <text v-for="(ingreitem,ingreindex) in item.ingredients.slice(0, 4) " :key="ingreindex">
-              {{ingreitem.name}}</text>
-          </view>
-        </view>
-      </view>      
-    </view>
+			<view class="content_container">
+				<view v-if="hasHistory" class="search_history">
+					<view class="history_title">
+						搜索历史  
+						<text class="remove_history" @click="removeHistory">清空</text>
+					</view>
+					<view class="history_content">
+					<text @click="onhistorySearch(item)" v-for="(item,index) in historyList" :key="index" class="history_item">
+						{{item}}
+					</text>          
+					</view>
+				</view>	
+				<u-loading-page :loading='isListLoading'></u-loading-page>
+					<template v-if="!hasHistory" >
+							<u-list
+							    height='calc(100vh - 50px)'
+									@scrolltolower="scrolltolower"
+									v-if='sourceList.length !==0' 
+								>	
+								<view class="source_item" @click="navToDetailSource(item._id,item.source_name)" v-for="(item,index) in sourceList" :key="index">
+							<view style="width: 95px;" class="source-img">
+								<image style="width: 100%;" :src="item.imgUrl" mode="scaleToFill"></image>  
+							</view>
+							<view class="source_infor">
+								<view class="source_name">{{item.source_name}}</view>
+								<view class="source_description">{{item.descrptions}}</view>
+								<view class="source_ingre">
+									<text v-for="(ingreitem,ingreindex) in item.ingredients.slice(0, 4) " :key="ingreindex">
+										{{ingreitem.name}}</text>
+								</view>
+							</view>
+						</view>   
+						<u-loading-icon class="mt-10" :show='isMoveLoading' mode="circle"></u-loading-icon>
+						<view class="isShowAll mt-10" v-if="isShowAll">
+							没有更多啦
+						</view>
+								</u-list>
+						<view v-if='sourceList.length ===0'>
+							<u-empty
+								mode="search"						
+								icon="http://cdn.uviewui.com/uview/empty/car.png"
+							>
+							</u-empty>
+						</view>
+					</template>   	
+			</view>
     <basket-icon :isBasket="isBasket">
     </basket-icon>
 	</div>
@@ -44,14 +67,23 @@
 		data(){
 			return {
 				searchValue:'',
-				sourceList:{},
+				sourceList:[],
         hasHistory:false,
         hasContent:false,
         historyList:[],
+				searchFilter:'',
+				isListLoading:false,
+				total:10,
+				limit:7,
+				isShowAll:false,
+				isMoveLoading:false,
 			}
 		},
 		onShow(){
 			this.initData();
+			this.$api.commonCloud('getSource').then(res => {
+				this.total = res.data.length
+			})
 		},
     components:{
       BasketIcon
@@ -60,95 +92,79 @@
       ...mapState(['isBasket','user_id'])
     },
 		methods:{
+			scrolltolower(){
+				if(this.sourceList.length!==0 &&this.sourceList.length === this.total && this.sourceList.length>=this.limit){
+					this.limit = 7
+					this.isShowAll = true
+				}else{
+				this.isMoveLoading = true
+				console.log(this.isShowAll)
+				this.$api.commonCloud('getSource',{
+			  limit:this.limit+=2
+					}).then(res=>{	
+					this.isMoveLoading = false
+					this.sourceList = res.data
+				})
+			}
+			},
       ...mapMutations(['setBasket']),
       initData(){
-        uni.showLoading({
-          title: "加载中..."
-        })
-        if(this.user_id){
-          
-        }
-        this.getSource()
-        let history = uni.getStorageSync('historyList')
-        if(history){
-          console.log("history exsit")
-          this.historyList = history
-        }
-        uni.hideLoading()
+				this.historyList= uni.getStorageSync('historyList') || []
       },
-			getSource(){
-				console.log('123')
-				this.$api.commonCloud('getSource').then(res => {
-					console.log(res.result.data)
-					this.sourceList = res.result.data
+			getCookBook(){
+				if(this.searchFilter){
+					this.searchWhere()
+				}else{
+					this.searchAll()
+				}
+			},
+			searchAll(){
+				this.isListLoading = true
+				this.$api.commonCloud('getSource',{
+					limit:this.limit
+				}).then(res => {
+					console.log('getSource',res)
+					const {data} = res
+					this.sourceList = data
+					this.isListLoading = false
 				})
 			},
+			searchWhere(){
+				this.isListLoading = true
+					this.$api.commonCloud('searchSource',{
+					  name:this.searchFilter
+					}).then(res=>{
+						const {data} = res
+						console.log('resss',res)
+					  this.sourceList = data
+						this.isListLoading = false
+					}) 
+			},
       onhistorySearch(value){
-        let searchValue = value
-        this.searchValue = value
-        this.$api.commonCloud('searchSource',{
-          name:searchValue
-        }).then(res=>{
-          this.sourceList = res.data
-        }) 
+        this.searchFilter = value
+				this.searchWhere()
       },
       removeHistory(){
         uni.removeStorageSync('historyList')
-        this.historyList = uni.getStorageSync('historyList')
+        this.historyList = uni.getStorageSync('historyList') || []
         this.getAll()
       },
-			onSearch(){
-				let searchValue = this.searchValue
-        searchValue.replace(/\s*/g,'')
-        let historyList = this.historyList
-        console.log('historyList',historyList)
-            if(historyList.length){
-              console.log("his1")
-              let checkrepeat = false
-              historyList.forEach(item=>{
-                console.log(item)
-                if(item == searchValue){
-                  checkrepeat = true
-                }
-                console.log(checkrepeat)
-              })
-              if(!checkrepeat){
-                console.log('push1')
-                historyList.push(searchValue)
-                uni.setStorage({
-                  key:'historyList',
-                  data:historyList
-                })    
-              }
-            }else{
-               historyList.push(searchValue)
-            }
-             uni.setStorage({
-               key:'historyList',
-               data:historyList
-             })            
-             
-             this.historyList = uni.getStorageSync('historyList')
-        
-        if(searchValue == ""){
-          this.getSource()
-        }else{
-          uni.showLoading({
-              title: "加载中..."
-            })
-          this.$api.commonCloud('searchSource',{
-            name:searchValue
-          }).then(res=>{
-            
-            this.sourceList = res.data
-            uni.hideLoading()
-            
-          }) 
-        }
+			handleSearch(){
+				const hasHistory = this.historyList.some(item => item === this.searchFilter)
+				console.log('hasHistory',hasHistory)
+          if(!hasHistory && this.searchFilter){
+						this.historyList.push(this.searchFilter)
+						uni.setStorage({
+							key:'historyList',
+							data:this.historyList
+						})  
+						this.historyList = uni.getStorageSync('historyList')		
+					}
+          this.getCookBook()
 			},
       getAll(){
-        this.searchValue = ""
-        this.getSource()
+        this.searchFilter = ''
+        this.getCookBook()
       },
       navToDetailSource(sourceId,name){
         uni.navigateTo({
@@ -160,6 +176,12 @@
 </script>
 
 <style>
+	.mt-10{
+		padding: 10px;
+	}
+	.isShowAll{
+		text-align: center;
+	}
   .input_container{
     display: flex;
     align-items: center;

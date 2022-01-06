@@ -1,7 +1,10 @@
 <template>
+<view class="notes">
+	
+
 	<view class="note_container">
     <view class="note_ul">
-    <view class="note_item" v-for="(item,index) in noteList" :key="index" v-show="index%2 == 1" @click="goNoteDetail(item._id)">
+    <view class="note_item" v-for="(item,index) in noteList" :key="index" v-show="index%2 == 0" @click="goNoteDetail(item._id)">
       <view class="item_img">
       <image :src="item.note_imgUrl[0]" mode="widthFix"></image>            
       </view>
@@ -15,7 +18,7 @@
     </view>       
     </view>
     <view class="note_ul">
-    <view class="note_item" v-show="index%2 == 0" v-for="(item,index) in noteList" :key="index" @click="goNoteDetail(item._id)">
+    <view class="note_item" v-show="index%2 == 1" v-for="(item,index) in noteList" :key="index" @click="goNoteDetail(item._id)">
       <view class="item_img">
       <image :src="item.note_imgUrl[0]" mode="widthFix"></image>            
       </view>
@@ -26,28 +29,56 @@
       <image class="note_user_img" :src="item.user_imgUrl" mode=""></image>              
       <text class="note_user_name" >{{item.note_name}}</text>
       </view>   
-    </view>       
-    </view>
+    </view> 
+    </view>	
+	
     <!-- <view @click="addNote" class="add">发布心得</view> -->
 	</view>
+  <u-loading-icon :show='isListLoading' mode="circle"></u-loading-icon>
+	<view class="isShowAll" v-if="isShowAll">
+		没有更多啦
+	</view>
+	</view>	
 </template>
 
 <script>
 	export default {
 		data() {
 			return {
-        noteList:{}
-				
+        noteList:[],
+				limit:10,
+				isShowAll:false,
+				isListLoading:false
 			}
 		},
     onShow(){
       this.initData() 
     },
+		onReachBottom(){
+			if(this.noteList.length === this.total){
+		  	this.isShowAll = true
+			  }else{
+				this.isListLoading = true
+				console.log(this.isShowAll)
+				this.$api.commonCloud('getNote',{
+			  limit:this.limit+=2
+			}).then(res=>{	
+				this.isListLoading = false
+			  this.noteList = res.data
+			})
+			}
+			
+		},
 		methods: {
 			initData(){
-        this.$api.commonCloud('getNote').then(res=>{
+        this.$api.commonCloud('getNote',{
+          limit:this.limit
+        }).then(res=>{
           this.noteList = res.data
         })
+				this.$api.commonCloud('getNote').then(res=>{
+				  this.total = res.data.length
+				})
       },
       goNoteDetail(itemId){
         uni.navigateTo({
@@ -64,6 +95,9 @@
 </script>
 
 <style>
+	.isShowAll{
+		text-align: center;
+	}
   .note_container{
     display: flex;
     margin-top: 10px;
