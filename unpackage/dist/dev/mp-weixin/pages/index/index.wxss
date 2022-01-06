@@ -46,47 +46,55 @@
   font-weight: bold;
   padding: 14px 0;
 }
-.ingre_wrapper .ingre_content.data-v-57280228 {
+.ingre_wrapper .ingre_items.data-v-57280228 {
   display: flex;
   align-items: center;
 }
-.ingre_wrapper .ingre_content .ingre_item.data-v-57280228 {
+.ingre_wrapper .ingre_items .ingre_item.data-v-57280228 {
   flex: 1;
   text-align: center;
 }
-.ingre_wrapper .ingre_content .ingre_item image.data-v-57280228 {
+.ingre_wrapper .ingre_items .ingre_item image.data-v-57280228 {
   width: 50px;
   height: 50px;
 }
-.ingre_wrapper .ingre_content .ingre_item .ingre_item_name.data-v-57280228 {
+.ingre_wrapper .ingre_items .ingre_item .ingre_item_name.data-v-57280228 {
   font-size: 12px;
 }
-.note_container.data-v-57280228 {
-  width: 95%;
-  margin: 10px auto;
+.note_wrapper.data-v-57280228 {
+  padding: 0 10px 5px 10px;
 }
-.note_title.data-v-57280228 {
+.note_wrapper .note_header.data-v-57280228 {
   display: flex;
   align-items: center;
-  margin: 10px 0;
+  padding: 10px 0;
 }
-.note_title .title_detail.data-v-57280228 {
+.note_wrapper .note_header .note_title.data-v-57280228 {
+  font-size: 16px;
+  font-weight: bold;
+}
+.note_wrapper .note_header .title_detail.data-v-57280228 {
   font-size: 12px;
   position: absolute;
   right: 20px;
   font-weight: 600;
   color: #666;
 }
-.note_title .title_content.data-v-57280228 {
-  font-size: 20px;
-  font-weight: bold;
+.note_wrapper .note_items.data-v-57280228 {
+  -webkit-column-count: 2;
+          column-count: 2;
+  -webkit-column-gap: 20px;
+          column-gap: 20px;
 }
-.note_item.data-v-57280228 {
-  width: 50%;
-  float: left;
+.note_wrapper .note_items .note_item.data-v-57280228 {
+  width: 100%;
   margin-bottom: 15px;
 }
-.note_item .item_content.data-v-57280228 {
+.note_wrapper .note_items .note_item .item_img image.data-v-57280228 {
+  width: 100%;
+  border-radius: 5px;
+}
+.note_wrapper .note_items .note_item .item_content.data-v-57280228 {
   padding: 0 10px;
   font-size: 13px;
   color: #555;
@@ -97,16 +105,7 @@
   text-overflow: ellipsis;
   /* 多行文本溢出*/
 }
-.note_item .item_img.data-v-57280228 {
-  width: 100%;
-  padding: 0 10px;
-  box-sizing: border-box;
-}
-.note_item .item_img image.data-v-57280228 {
-  width: 100%;
-  border-radius: 5px;
-}
-.note_item .item_profile.data-v-57280228 {
+.note_wrapper .note_items .note_item .item_profile.data-v-57280228 {
   padding: 0 10px;
   display: flex;
   align-items: center;

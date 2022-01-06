@@ -28,8 +28,6 @@
       </view>   
     </view>       
     </view>
-
-
     <!-- <view @click="addNote" class="add">发布心得</view> -->
 	</view>
 </template>
