@@ -85,8 +85,7 @@
 						user_id:user_id,
 						source_id:sourceId
 					}).then(res => {
-					console.log(res.result.data)
-					if(res.result.data.length){
+					if(res.data.length){
 						that.isStar = true
 					}else{
 						that.isStar =false
@@ -97,7 +96,7 @@
           source_id:sourceId,
         }).then(res =>{
             console.log('resbasket',res)
-            if(res.result.data.length){
+            if(res.data.length){
               this.onBasket = true
             }else{
               this.onBasket = false
