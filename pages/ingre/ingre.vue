@@ -18,45 +18,24 @@
 			</cart-item>
 			<view class="block">
 			</view>
-		<!-- 	<view class="ingre_item" v-for="(item,index) in foods" :key="index">
-					<view class="item_image">
-						<image @click="goingreDetail(item._id,item.food_name)" :src="item.imgUrl" mode=""/>
-					</view>
-					<view class="item_info">
-						<view class="item_food_name">
-							{{item.food_name}}
-						</view>
-						<view class="item_food_description">
-							{{item.food_description.substring(0,item.food_description.indexOf("。"))}}
-						</view>		
-						<view class="ingre_footer">
-							<view class="ingre_price">
-								￥28
-							</view>
-							<view class="ingre_btn">
-								<button @click="goto('/pages/about/about')">购买</button>
-							</view>
-						</view>
-					</view>
-			</view> -->
 		</scroll-view>
-		<view class="ingre_cart" v-if="cart_num>0">
-			<view class="cart_left" @click="open()" >
+		<view class="ingre_cart" v-if="cartTotal>0">
+			<view class="cart_left" @click="cartBagShow = true" >
 				<image src="../../static/cart.png" mode="" />
-				<view class="cart_total" v-if="cart_num>0">
-					{{cart_num}}
+				<view class="cart_total" v-if="cartTotal>0">
+					{{cartNum}}
 				</view>
 			</view>
 			<view class="cart_right">
 				<view class="cart_total">
 					￥{{cartTotal}}
 				</view>
-				<view class="cart_btn">
+				<view class="cart_btn" @click="goBuy(cartTotal)">
 					结算
 				</view>
 			</view>
 		</view>
-			<view class="cart_modal" :class="show ? 'cart_modal_active':''">
+			<view class="cart_modal" :class="cartBagShow ? 'cart_modal_active':''">
 				<view class="cart_title" >
 					<p>购物袋</p>
 					<p @click='clearCart'>清空</p>
@@ -71,185 +50,47 @@
 					</cart-item>
 				</scroll-view>
 			</view> 	
-		<view class="mark" @click="show = false" v-if="show">
-			
-		</view>
-	</view>	
-	<!-- <div class="ingre_container">
-    <view class="ingre_content" @click="iscartList = false">
-		<view class="ingre_left">
-      <view class="left_ul">
-        <view class="left_item" :class="currentSort == item ? 'left_item_active':''" v-for="(item,index) in sortlist" @click="getSort(item)" :key="index"  title="" note="">
-					<image style="width: 40px;height: 40px;" v-if="currentSort == item" src="../../static/ingre_nav1.png" mode=""></image>  
-					<view class="">
-							{{item}}
-					</view>
-        </view>
-      </view>
-		</view>
-    <scroll-view scroll-y="true" :class="totalPrice>0 ? '':'ingre_right_kong'" class="ingre_right">
-      <view class="ingre_detail" v-for="(item,index) in foods" :key="index">
-        <image @click="goingreDetail(item._id,item.food_name)" :src="item.imgUrl" mode=""></image>
-        <view>
-           <view class="ingre_guige">
-             <view class="ingre_name">
-               {{item.food_name}}
-             </view>
-             <view class="ingre_description">
-               {{item.food_price}}
-             </view>
-           </view>
-           <view class="ingre_button">
-          <buy-cart :food="item"></buy-cart>       
-          </view>
-        </view>
-      </view>      
-    </scroll-view>          
-    </view>
-    <view v-if="totalPrice>0" class="cart_container">
-      <view class="cart_left">
-        <image @click="iscartList = !iscartList" style="width: 30px;height: 30px;" src="../../static/cart_active.png" mode=""></image>
-        <view class="totalPrice">
-          ￥{{totalPrice}}
-        </view>        
-      </view>
-    <view class="goBuy" @click="goBuy" >选好了</view>
-    </view>
-    <scroll-view :class="iscartList ? '.addCart_avtive':''" class="addCart_container" scroll-y="true"> 
-          <view class="cartList_item" v-for="(item,index) in cartFoodList" :key="index">
-          <view class="food_name">
-              {{item.food_name}}
-          </view>
-          <view class="food_infor">
-            <text>x{{item.food_num}}</text> 
-            <text>￥{{item.food_price}}</text>
-          </view>      
-          </view>          
-      </scroll-view> 
-	</div> -->
+		  <view class="mark" @click="cartBagShow = false" v-if="cartBagShow">
+	  	</view>
+	  </view>
 </template>
 
 <script>
 	import cartItem from '../../components/cart-item/cart-item.vue'
 	import {mapState,mapMutations,mapGetters} from 'vuex'
-	import buyCart from '../../components/buyCart'
 	import cartActionBtn from '../../components/cart-action-btn/cart-action-btn.vue'
 	export default {
 		data(){
 			return {
 				sortlist:['烘焙用粉','烘焙乳品','烘焙用糖','装饰调色','烘焙工具'],
 				currentSort:'烘焙用粉',
-				foods:{},
-				showLoading:true,
-				cartFoodList:[],
-				totalPrice:0,
-        cartNum:0,
-        iscartList:false,
-				show:false,
+				foods:[],
+				cartBagShow:false,
 			}
 		},
-		created(){
-			// this.initCart()
-			console.log('a',this.cartList)
-		},
 		components:{
-			buyCart,
 			cartItem,
 			cartActionBtn
 		},
 		onLoad(){
-			console.log('store',this.$store)
 			this.getSort(this.currentSort)
 		},
     onShow(){
-      console.log('我触发了')
     },
 		computed:{
-			...mapGetters(['cartTotal']),
+			...mapGetters(['cartTotal','cartNum']),
       ...mapState({
-				cartList:state=> state.cart.cartList
-			}),
-			cart_num(){
-				if(this.cartList.length !== 0){
-					let num = 0
-					this.cartList.forEach(item=> num+=item.food_num)
-					return num
-				}else{
-					return 0;
-				}
-			}
+				cartList:state=> state.cart.cartList,
+				userId:state => state.user.userId
+			})
 		},
 		methods:{
 			clearCart(){
 				this.removeCartList()
-				this.show = false
+				this.cartBagShow = false
 			},
-			handleFoodNum(item,num,type){
-				console.log('ok')
-				this.saveCartList({...item,food_num:type === 'add'? ++num : --num});
-			},
-			open(){	
-				this.show = true
-			},
-			close(){
-				this.show = false
-			},
-			...mapMutations(['initCart','saveCartList','removeCartList']),
-			initCartList(){
-        var that = this
-				let newArr = []
-				let cartFoodNum = 0
-				let num = 0
-        this.totalPrice = 0
-				let user_id = this.user_id
-				let shopCart = this.shopCart
-				this.$api.commonCloud('getCart',{
-          user_id:user_id
-        }).then(hasCart => {
-					if(hasCart.data.length){
-					this.$api.commonCloud('updateCart',{
-            user_id:user_id,
-            cart_infor:shopCart
-          }).then(res => {
-            console.log('更新购物车成功',res);
-				})
-					}else{
-						this.$api.commonCloud('addCart',{
-              user_id:user_id,
-              cart_infor:shopCart
-            }).then(res => {
-							console.log(res)
-						})
-					}
-				})
-
-				Object.keys(this.shopCart).forEach((item,index)=>{
-          console.log('itemitem',item);
-					if(this.shopCart && this.shopCart[item]){
-					let foodItem = this.shopCart[item]
-					num += foodItem.food_num
-          
-					this.totalPrice += foodItem.food_price * foodItem.food_num
-          console.log('totalPrice',this.totalPrice)
-          this.cartNum += foodItem.food_num
-					console.log('totalPrice',this.totalPrice)
-					if(foodItem.food_num>0){
-						this.cartFoodList[cartFoodNum] = {};
-						this.cartFoodList[cartFoodNum]._id = foodItem._id
-						this.cartFoodList[cartFoodNum].food_name = foodItem.food_name
-						this.cartFoodList[cartFoodNum].food_price = foodItem.food_price
-						this.cartFoodList[cartFoodNum].food_num = foodItem.food_num
-						cartFoodNum++
-					}
-					console.log('cartFoodList',this.cartFoodList)
-					newArr[index] = num
-					}else{
-						newArr[index] = 0
-					}
-				})
-			},
+			...mapMutations(['saveCartList','removeCartList']),
 			getSort(item){
-				console.log('itemm',item)
         uni.showLoading({
           title: "加载中...",
           mask:false
@@ -258,35 +99,30 @@
 				this.$api.commonCloud('getFoods',{
           food_sort:this.currentSort
         }).then(res => {
-					console.log('this.foods',res)
-					this.foods = res.data 
+					const {data = []} = res
+					this.foods = data 
           uni.hideLoading()
 				})
-				console.log('渲染完成')
-				this.showLoading = false
 			},
-      goBuy(){
-        if(this.user_id){
-          uni.navigateTo({
-            url:`/pages/buylist/buylist`
-          })
-        }else{
-          uni.navigateTo({
-            url:`/pages/wxlogin/wxlogin`
-          })
-        }
-      },
-      goingreDetail(ingreId,name){
-        uni.navigateTo({
-          url:`/pages/ingreDetail/ingreDetail?id=${ingreId}&name=${name}`
+			goBuy(cartTotal){
+				if(this.userId){
+					 uni.navigateTo({
+          url:`/pages/buylist/buylist?cartTotal=${cartTotal}&cartNum=${this.cartNum}`
         })
-      }
-			
+				}else{
+					uni.navigateTo({
+					  url:`/pages/wxlogin/wxlogin`
+					})
+				}
+				
+			}
 		},
 		watch:{
-			// shopCart: function (value){
-			// 		this.initCartList();
-			// },
+			cartList: function (val){
+				if(val.length === 0){
+					this.cartBagShow = false
+				}
+			},
 		}
 	}
 </script>
@@ -482,156 +318,4 @@
 			}
 		}
 	}
-/*  .ingre_container{
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    background-color: #EEE;
-    height: 100vh;
-  }
-  .ingre_content{
-    display: flex;
-    padding-top: 10px;
-  }
-  .ingre_content .ingre_left{
-    flex: 1;
-  }
-  .ingre_content .ingre_right{
-    flex: 3;
-    height: calc(100vh - 65px);
-  }
-  .ingre_content .ingre_right_kong{
-    height: 100vh;
-  }
-  .ingre_content .ingre_right .ingre_detail{
-    display: flex;
-    margin: 0px 8px 20px 8px;
-    background-color: #fff;
-    border-radius: 5px;
-    height: 80px;
-    align-items: center;
-    padding: 5px 13px;
-    box-shadow: -2px 0 3px -1px #d8d8d8,
-    0 -2px 3px -1px #d8d8d8, 
-    0 2px 3px -1px #d8d8d8, 
-    2px 0 3px -1px #d8d8d8; 
-    
-  }
-  .ingre_content .ingre_right .ingre_detail image{
-    width: 60px;
-    height: 65px;
-   
-  }
-  .ingre_content .ingre_right .ingre_detail>view{
-    flex: 3;
-    display: flex;
-    justify-content: space-between;
-    margin-left: 5px;
-  }
-  .ingre_content .ingre_right .ingre_detail .ingre_guige{
-    display: flex;
-    flex-direction: column;
-  }
-  .ingre_content .ingre_right .ingre_detail .ingre_guige .ingre_name{
-    font-size: 15px;
-    font-weight:bold;
-  }
-  .ingre_content .ingre_right .ingre_detail .ingre_guige .ingre_description{
-    font-size: 12px;
-    color: #555;
-  }
-  .ingre_content .ingre_right .ingre_detail .ingre_button{
-    display: flex;
-    align-items: center;
-  }
-  .ingre_left{
-    width: 100%;
-  }
-  .left_ul{
-    width: 100%;
-  }
-  .left_item{
-    width: 100%;
-    padding: 20px 0;
-    text-align: center;
-    box-sizing: border-box;
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-	}
-  .left_item_active{
-    border-left: 3px solid #FDAB61;
-    background-color: #EEE;
-  }
-  .left_item_active + .left_item{
-    border-top-right-radius: 5px;
-    
-  }
-  .cart_container{
-    display: flex;
-    align-items: center;
-    background-color: #fff;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 45px;
-    padding: 5px 20px;
-    z-index: 999;
-    justify-content: space-between;
-  }
-  .cart_container .cart_left{
-    display: flex;
-    align-items: center;
-  }
-  .cart_container .totalPrice{
-    margin-left:10px;
-    font-weight: 600;
-    font-size: 20px;
-  }
-  .cart_container .goBuy{
-    background-color: #FDAB61;
-    color: #fff;
-    font-size: 15px;
-    padding: 7px 20px;
-    border-radius: 10px;
-  }
-  .addCart_container{
-    position: absolute;
-    bottom: -500px;
-    transition: all .5s;
-    background-color: #fff;
-    width: 100%;
-    max-height: 150px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    overflow: scroll;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    font-size: 15px;
-    
-  }
-  .addCart_container .cartList_item{
-    height: 30px;
-    padding: 10px 15px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .addCart_avtive{
-    bottom: 55px;
-    transition: all .5s;
-  }
-  .cartList_item .food_name{
-    flex: 4;
-  }
-  .cartList_item .food_infor{
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  } */
-  
-  
 </style>

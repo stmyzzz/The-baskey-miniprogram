@@ -41,6 +41,7 @@
 </template>
 
 <script>
+	import {mapState,mapMutations} from 'vuex'
 	export default {
 		data() {
 			return {
@@ -51,16 +52,18 @@
 			}
 		},
     onLoad(){
-      this.user_id = uni.getStorageSync('user_id')
       this.initData()
     },
     computed:{
+      ...mapState({
+				userId:state => state.user.userId
+			})
     },
 		methods: {
       initData(){
-        let user_id = this.user_id 
+        let user_id = this.userId 
         this.$api.commonCloud('getBasket',{
-          user_id:user_id
+          user_id
         }).then(res=>{
           console.log(res)
           this.basketList = res.data

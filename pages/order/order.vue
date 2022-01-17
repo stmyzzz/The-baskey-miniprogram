@@ -1,42 +1,41 @@
 <template>
-	<view class="order_container">
+	<view class="order_wrapper">
 		<view class="order_item" v-for="(item,index) in orderList" :key="index">
 		  <view class="order_header">
 		    <view class="header_left">
-		      <text>icon</text>
           <text>食材集市</text>
 		    </view>
         <view class="header_right">
-          <text>{{stateMap[item.order_status]}}</text>
+          <text>{{stateMap[item.order_status]['status']}}</text>
         </view> 
 		  </view>
+			<view class="header_time">
+				{{formDate(item.order_date)}}
+			</view>
       <view class="order_main">
-        <view class="main_item" v-for="(mainitem,mainindex) in item.order_infor" :key="mainindex">
-          <view class="main_left">
-            <image style="width: 50px;height: 50px;" src="https://vkceyugu.cdn.bspapp.com/VKCEYUGU-cf5ae6e8-d0b3-4d9d-a8e1-68de7134fb37/bf4a31f5-40f3-4016-ad80-f739fc9cf28b.png" mode=""></image>
-          </view> 
-          <view class="main_right">
-            <view class="right_1">{{mainitem.food_name}}</view>
-            <view class="right_2">
-            <view>￥{{mainitem.food_price}}</view>
-            <view>x{{mainitem.food_num}}</view>              
-            </view>
-          </view>
-        </view>
+        <view class="main_left">
+					<image  v-for="(mainitem,mainindex) in item.order_infor.slice(0,2)" :key="mainindex" style="width: 50px;height: 50px;" :src="mainitem.imgUrl" mode="" />
+					<view class="more_img">
+						<image src="../../static/more.png" mode=""></image>
+					</view>	
+				</view>	
+				<view class="main_right">
+					<view class="right_total">
+						￥{{item.order_total}}
+					</view>
+					<view class="right_num">
+						共{{item.order_infor.length}}种
+					</view>
+				</view>
       </view>
-      <view class="order_footer">
-        <view class="footer_total">
-          总价 ￥{{item.order_total}}
-        </view>
         <view class="footer_btn">
           <view class="submit_btn1" @click="goOrderDetail(item._id)">
             查看详情
           </view>
-          <view class="submit_btn2">
+          <!-- <view class="submit_btn2">
             确认收货
-          </view>          
+          </view>  -->        
         </view>
-      </view>
 		</view>
 	</view>
 </template>
@@ -47,8 +46,11 @@
 			return {
         user_id:null,
         orderList:{},
-		stateMap:['待发货','待签收','待评价','订单已完成']
-				
+		    stateMap:[
+				{status:'待发货',info:''}
+				,{status:'待签收',info:''}
+				,{status:'待评价',info:''}
+				,{status:'已完成',info:''}]
 			}
 		},
     onLoad(options){
@@ -60,24 +62,40 @@
 		
 	},
 		methods: {
+			formDate(time,format = 'yyyy-MM-dd HH:mm:ss'){
+				var date = new Date(time);
+				        var formatter = function (i) { return (i < 10 ? '0' : '') + i };
+				        return format.replace(/yyyy|MM|dd|HH|mm|ss/g, function (a) {
+				          switch (a) {
+				            case 'yyyy':
+				              return formatter(date.getFullYear());
+				              break;
+				            case 'MM':
+				              return formatter(date.getMonth() + 1);
+				              break;
+				            case 'mm':
+				              return formatter(date.getMinutes());
+				              break;
+				            case 'dd':
+				              return formatter(date.getDate());
+				              break;
+				            case 'HH':
+				              return formatter(date.getHours());
+				              break;
+				            case 'ss':
+				              return formatter(date.getSeconds());
+				              break;
+				          }
+				        })
+			},
 			initData(){
         let user_id = this.userId
         console.log(user_id)
         this.$api.commonCloud('getOrder',{
           user_id:user_id
         }).then(res=>{
-          console.log(res)
-          this.orderList = res.data
-          console.log(this.orderList)
-     /*     this.$api.commonCloud('getOrder',{
-            id:id
-          }).then(res=>{
-            console.log(res)
-            this.orderList.forEach(item=>{
-              item['orderImg'] = res.imgUrl
-            })
-            console.log(orderImg)
-          }) */
+					const {data} = res
+          this.orderList = data
         })
       },
       goOrderDetail(orderId){
@@ -89,78 +107,94 @@
 	}
 </script>
 
-<style>
+<style lang='less'>
   page{
-    background-color: #f5f5f5;
+    background-color: #F2F5F9;
   }
   .order_main{
     padding: 10px 0px;
   }
-  .order_item{
-    background-color: #fff;
-    margin: 15px;
-    border-radius: 8px;
-    padding: 12px;
-  }
-  .order_header{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .order_header .header_left{
-    font-size: 15px;
-    font-weight: 600;
-  }
-  .order_header .header_right{
-    font-size: 14px;
-    color: red;
-  }
-  .main_item{
-    display: flex;
-    align-items: center;
-  }
-  .main_left{
-    flex: 1;
-    text-align: center
-  }
-  .main_right{
-    flex: 3;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .right_1{
-    flex: 2;
-  }
-  .right_2{
-    flex: 1;
-    display: flex;
-    justify-content: space-between;
-  }
-  .order_footer{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .footer_total{
-    font-size: 12px;
-    font-weight: 600;
-  }
-  .submit_btn1,.submit_btn2{
-    border: 1px solid #F0AD4E;
-    color: #F0AD4E;
-    font-size: 12px;
-    border-radius: 5px;
-    padding: 5px 10px;
-  }
-  .submit_btn1{
-    margin-right: 10px;
-  }
-  .footer_btn{
-    display: flex;
-    align-items: center;
-  }
+	.order_wrapper{
+		padding-bottom: 50px;
+		.order_item{
+			margin: 10px 6px;
+			background-color: #fff;
+			margin: 15px;
+			border-radius: 8px;
+			padding: 15px;
+			.order_header{
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				margin-bottom: 6px;
+				.header_left{
+					font-size: 14px;
+					display: flex;
+					flex-direction: column;
+				}
+				.header_right{
+					font-size: 12px;
+					color: #A3A3A3;
+				}
+			}
+			.header_time{
+				font-size: 13px;	
+				margin-bottom: 5px;
+				color: #A3A3A3;
+			}
+			 .order_main{
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				margin-bottom: 6px;
+				.main_left{	
+					display: flex;
+					image{
+						padding: 0px 5px;
+					}
+					.more_img{
+						width: 50px;
+						height: 50px;
+						display: flex;
+						align-items: center;
+						image{
+							width: 30px;
+							height: 30px;
+						}
+					}
+				}
+				.main_right{
+					display: flex;
+					flex-direction: column;
+					align-items: flex-end;
+					justify-content: center;
+					.right_total{
+						font-size: 17px;
+						font-weight: 700;
+					}
+					.right_num{
+						color: #A3A3A3;
+						font-size: 11px;
+					}
+				}
+			 }
+			 .footer_btn{
+				display: flex;
+				align-items: center;  
+				justify-content: flex-end;
+				margin-bottom: 10px;
+				.submit_btn1,.submit_btn2{
+					background-color: #f0ad4e;
+					color: #fff;
+					font-size: 14px;
+					padding: 7px 10px;
+				} 
+				/* .submit_btn1{
+					margin-right: 10px;
+				} */
+			}
+		}
+	}
+ 
   
-  
-
 </style>

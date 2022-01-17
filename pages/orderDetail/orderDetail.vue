@@ -1,41 +1,61 @@
 <template>
-	<view class="order_container">
-		<view class="order_main" v-for="(item,index) in order" :key="index">
-        <van-steps :steps="steps" :active="item.order_status" />
-      <view class="order_user">
-        <view class="user_icon">
-          <image style="width: 50px;height: 50px;" src="../../static/me.png" mode=""></image>
-        </view>
-        <view class="user_main">
-          <view class="main1">
-            <text style="font-size: 17px;font-weight: bold;">{{item.order_username}}</text>
-            <text style="margin-left: 10px;">{{item.order_phone}}</text>
-          </view>
-          <view class="main2">
-            {{item.order_address}}
-          </view>
-        </view>
-      </view>
+	<view class="order_wrapper">
+		<view class="order_main">
+			<template v-if="order.order_status !== 3">
+				<van-steps :steps="steps" :active="order.order_status" />
+			</template>
+			<template v-else>
+				<view class="order_header">
+					<view>
+						订单已完成
+					</view>
+					<view>
+						感谢您选择食材集市，欢迎再次光临
+					</view>
+				</view>
+			</template>
+			<view class="info_ingre">
+					<view class="info_title">
+						订单信息
+					</view>
+					<view class="info_items">
+						<view class="info_item" :key='item' v-for="(item,index) in [order.order_phone,order.order_username,order.order_address]">
+							<view class="info_left">
+								{{infoMapList[index]}}
+							</view>
+							<view class="info_right">
+								{{item}}								
+							</view>
+						</view>
+					</view>
+			</view>
       <view class="order_ingre">
-        <view class="ingre_item" v-for="(ingreitem,ingreindex) in item.order_infor" :key="ingreindex">
-        <view class="item_left">
-            <text>{{ingreitem.food_name}}</text>       
-        </view>
-        <view class="item_right">
-            <text>{{ingreitem.food_num}}</text>
-            <text>{{ingreitem.food_price}}</text>       
-        </view>
-        </view>   
-        
-        <view class="total">
-          <view class="cancel" v-if="item.order_status == 0" @click="cancel" type="default">取消订单</view>
-          <view class="submit" v-if="item.order_status == 1" @click="submit" type="default">确认收货</view>
-           <view class="submit" v-if="item.order_status == 2" @click="assess" type="default">评价食材</view>
-           <view class="finish" v-if="item.order_status == 3"  type="default">订单已完成</view>
-          <view>{{item.order_total}}</view>
-        </view>     
+				<view class="ingre_items">
+					<view class="ingre_title">
+						食材信息
+					</view>
+					<view class="ingre_item" v-for="(ingreitem,ingreindex) in order.order_infor" :key="ingreindex">
+						<view class="item_left">
+							<image :src="ingreitem.imgUrl" mode="" />  
+						</view>
+						<view class="item_center">
+							<text>{{ingreitem.food_name}}</text>       
+						</view>
+						<view class="item_right">  
+							<text>{{ingreitem.food_price}}</text>  
+							<text>x{{ingreitem.food_num}}</text>
+						</view>
+					</view>  
+				</view>	
+				<view class="ingre_price">
+					<text>食材总价</text>
+					<text>￥{{order.order_total}}</text>
+				</view>
+				<view class="ingre_footer">
+						共{{order.order_num}}份，合计&nbsp;￥<text>{{order.order_total}}</text>
+				</view>
       </view>
-
+		
 		</view>
 	</view>
 </template>
@@ -47,12 +67,13 @@
 			return {
         id:null,
         order:{},
+				infoMapList:['收货地址','收货电话','收货人'],
         steps: [
         {
           text: '下单',
         },
         {
-          text: '集市发货',
+          text: '发货',
         },
         {
           text: '签收',
@@ -64,7 +85,8 @@
 			}
 		},
     onLoad(options){
-      this.id = options.id
+			const {id} = options
+      this.id = id
       this.initData()
     },
 		methods: {
@@ -72,8 +94,8 @@
         this.$api.commonCloud('getOrder',{
           id:this.id
         }).then(res =>{
-          console.log(res)
-          this.order = res.data
+					const {data} = res
+          this.order = data[0]
           console.log(res.data[0].order_infor)
         })
       },
@@ -127,9 +149,9 @@
 	}
 </script>
 
-<style>
+<style lang='less'>
   page{
-    background-color: #f5f5f5;
+    background-color: #F2F5F9;
   }
   .van-steps--horizontal {
     padding: 20px !important;
@@ -137,7 +159,7 @@
   .order_user{
     display: flex;
     align-items: center;
-    padding: 10px 15px;
+    padding: 25px 15px;
     background-color: #fff;
   }
   .order_user .user_main{
@@ -146,36 +168,112 @@
     flex-direction: column;
     margin-left: 10px;
   }
-  .order_container .order_main .order_status{
-    width: 100%;
-    height: 70px;
-    line-height: 70px;
-    background-color: #FDAB61;
-    color: #fff;
-    font-weight: bold;
-    font-size: 20px;
-    text-align: center;
-  }
-  .order_ingre{
-    margin-top: 15px;
-    background-color: #fff;
-  }
-  .ingre_item{
-    padding: 10px 15px;
-    border-bottom: 1px solid #f5f5f5;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .item_left{
-    flex:1;
-  }
-  .item_right{
-    flex: 2;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+  .order_wrapper{
+		.order_main{
+			margin: 10px 13px;
+			.order_header{
+				border-radius: 8px;
+				text-align: center;
+				height: 40px;
+				padding: 25px 15px;			
+				background-color: #FFFFFF;
+				view:nth-of-type(1){
+					font-weight: 600;
+					font-size: 18px
+				}
+				view:last-of-type{
+					color: #A3A3A3;
+					font-size: 13px;
+					font-weight: 400;
+				}
+	
+			}
+			.order_status{
+				width: 100%;
+				height: 70px;
+				line-height: 70px;
+				background-color: #FDAB61;
+				color: #fff;
+				font-weight: bold;
+				font-size: 20px;
+				text-align: center;
+			}
+			.info_ingre{
+				margin-top: 15px;
+				background-color: #fff;
+				padding: 15px 15px;
+				.info_title{
+					font-weight: 700;
+					font-size: 15px;
+				}
+				.info_item{
+					padding: 15px 0px;
+					font-size: 15px;
+					border-bottom: 1px solid #F7F7F7;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+				}
+			}
+			.order_ingre{
+				margin-top:15px;
+				background-color: #fff;	
+				padding: 15px 15px;
+				.ingre_items{
+					border-bottom: 1px solid #F7F7F7;	
+					.ingre_title{
+						font-weight: 700;
+						font-size: 15px;
+					}
+					.ingre_item{
+						padding: 25px 15px;
+						display: flex;
+						align-items: center;
+						justify-content: space-between;
+						.item_left{
+							width: 20%;
+							image{
+								width: 40px;
+								height: 40px;
+							}
+						}
+						.item_center{
+							flex: 1;
+						}
+						.item_right{
+							width: 20%;
+							display: flex;
+							align-items:flex-end;
+							flex-direction: column;
+							text:nth-of-type(1){
+								font-size: 14px;
+							}
+							text:nth-of-type(2){
+								font-size: 12px;
+								color: #A3A3A3;
+							}
+						}
+					}
+				}
+				.ingre_price{
+					border-bottom: 1px solid #F7F7F7;	
+					font-size: 15px;
+					padding: 25px 0;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+				}
+				.ingre_footer{
+					padding: 25px 0;	
+					font-size: 16px;
+					text-align: right;
+					text{
+						font-weight: 700;
+					}
+				}
+			}
+		}
+	}  
   .total{
     display: flex;
     justify-content:flex-end;

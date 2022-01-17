@@ -1,17 +1,17 @@
 <template>
 	<view>
 		<view class="ingre_wrapper">
-			<image :src="ingre[0].imgUrl" mode="aspectFit" />
+			<image :src="ingre.imgUrl" mode="aspectFit" />
 			<view class="ingre_header">
 				<view class="header_action">
 					<view class="ingre_name">
-						{{ingre[0].food_name}}/50g
+						{{ingre.food_name}}/50g
 					</view>   
 					<cartActionBtn :item='ingre'>
 					</cartActionBtn>  
 				</view>
 				<view class="ingre_description">
-					{{ingre[0].food_description}}
+					{{ingre.food_description}}
 				</view>
 			</view>
       <view class="ingre_cook">
@@ -41,9 +41,8 @@
 	export default {
 		data() {
 			return {
-				user_id:null,
 				cooks:[],
-				ingre:[]
+				ingre:{}
 				
 			}
 		},
@@ -58,26 +57,23 @@
         title: "加载中..."
       })
 			let ingreId = options.id
-			this.user_id = uni.getStorageSync('user_id')
 			this.$api.commonCloud('getFoods',{
 				food_id:ingreId
 			}).then(res=>{
-				this.ingre = res.data
+				this.ingre = res.data[0]
+				console.log('123',this.ingre)
         uni.hideLoading()
 			})
 			
 		},
 		created(){
-			this.initCart()
       this.$api.commonCloud('getCook',{
         ingre:'水'
       }).then(res=>{
-				console.log('res',res)
 				this.cooks = res
       })
 		},
 		methods:{
-			...mapMutations(['initCart']),
 			goIngre(id,name){
 				uni.navigateTo({
 					url:`/pages/sourceDetail/sourceDetail?id=${id}&name=${name}`
